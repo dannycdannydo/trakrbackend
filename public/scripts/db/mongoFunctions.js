@@ -1,5 +1,6 @@
 const MongoClient = require('mongodb').MongoClient;
 const uri = "mongodb+srv://dannycdannydo:Xz06&!y796@cluster0.c9qdu.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+var ObjectId = require('mongodb').ObjectId; 
 
 let mongoInsert = async function mongoInsert(database, collection, data)
 {
@@ -108,7 +109,7 @@ async function brochureQueryMongoliser(data)
             mong['$and'].push({'meta.dateCreated': {'$lte': value}})
         }
         else if(key == 'coords' && value){
-            mong['$and'].push({'base.loc': {'$geoWithin': {'$centerSphere': [[value.longitude, value.latitude], value.miles/3959]}}})
+            mong['$and'].push({'base.loc': {'$geoWithin': {'$centerSphere': [[value.longitude*1, value.latitude*1], value.miles*1/3959]}}})
         }
     }
     if(!mong['$and'][0]){
@@ -159,7 +160,11 @@ async function brochureArrayMongoliser(key, value)
         else if(key == 'tenants'){
             mongoloid['$or'].push({'tenants': {'$elemMatch': {'tenant': new RegExp(value[v])}}})
         }
+        else if(key == '_id'){
+            mongoloid['$or'].push({"_id": ObjectId(value[v])} )
+        }
     }
+    console.log(mongoloid)
     return(mongoloid)
 }
 
