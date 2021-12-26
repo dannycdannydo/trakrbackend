@@ -9,9 +9,12 @@
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "express": "~4.16.1",
+    "express-winston": "^4.2.0",
+    "glob": "^7.2.0",
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
     "lodash": "^4.17.21",
+    "moment": "^2.29.1",
     "mongodb": "^4.1.2",
     "morgan": "~1.9.1",
     "mquery": "^4.0.0"
