@@ -4,18 +4,22 @@ let getCustomerSubscription = async function getCustomerSubscription(data)
 {
   return new Promise(async function(resolve, reject)
   {
-    if(!data.email){
+    if(!data.id){
       resolve({subscription: {status: false}})
     }
     chargebee.subscription.list({
-      "email[is]" : data.email
+      "customer_id[is]" : data.id
     }).request(function(error,result) {
       if(error){
         //handle error
         reject(error)
       }else{
-          console.log(result.list[0])
-          resolve(result.list[0])
+          if(result.list[0]) {
+            resolve(result.list[0])
+          }
+          else {
+            resolve({subscription: {status: false}})
+          }
         }
       });
     })

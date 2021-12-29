@@ -26,7 +26,6 @@ let createCustomer = async function createCustomer(data)
             //handle error
             resolve(error);
         }else{
-            console.log(result)
             resolve(result)
         }
         });

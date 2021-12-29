@@ -6,7 +6,6 @@ let mongoInsert = async function mongoInsert(database, collection, data)
 {
     return new Promise(async function(resolve, reject)
     {
-        console.log(data)
         MongoClient.connect(uri, {useUnifiedTopology: true}, async function(err, db) {
             if (err) {console.log(err)
                 throw err};
@@ -30,7 +29,6 @@ let mongoQuery = async function mongoQuery(database, collection, data, freq, sor
 {
     return new Promise(async function(resolve, reject)
     {
-        console.log(data)
         MongoClient.connect(uri, {useUnifiedTopology: true}, function(err, db) {
             if (err) throw err;
             var dbo = db.db(database);
@@ -164,7 +162,6 @@ async function brochureArrayMongoliser(key, value)
             mongoloid['$or'].push({"_id": ObjectId(value[v])} )
         }
     }
-    console.log(mongoloid)
     return(mongoloid)
 }
 

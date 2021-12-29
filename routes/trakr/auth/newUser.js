@@ -9,7 +9,6 @@ router.post('/trakr/auth/newUser', async function(req, res, next) {
     user.email = req.body.params.email.email
     user.user_id = req.body.params.email.user_id
     const result = await createCustomer(user)
-    console.log(result)
     res.send('mofo')
 });
 
