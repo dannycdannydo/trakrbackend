@@ -6,6 +6,7 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "chargebee": "^2.8.0",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "express": "~4.16.1",
@@ -17,6 +18,8 @@
     "moment": "^2.29.1",
     "mongodb": "^4.1.2",
     "morgan": "~1.9.1",
-    "mquery": "^4.0.0"
+    "mquery": "^4.0.0",
+    "ngrok": "^4.2.2",
+    "stripe": "^8.195.0"
   }
 }
