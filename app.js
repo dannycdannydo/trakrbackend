@@ -32,9 +32,3 @@ module.exports = () => express()
 chargebee.configure({site : "trakr", 
   api_key : "live_KE0M4xJUjjqSvzacd3SsSuzj1VYSIZPAf"});
 
-  const ngrok = require('ngrok');
-(async function() {
-  const url = await ngrok.connect(3000);
-  console.log(url)
-})();
-

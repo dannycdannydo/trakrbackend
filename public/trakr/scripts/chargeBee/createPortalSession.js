@@ -1,21 +1,25 @@
 var chargebee = require('chargebee');
 
-async function createPortalSession (data) {
+
+let createPortalSession = async function createPortalSession(data)
+{
+  return new Promise(async function(resolve, reject)
+  {
     chargebee.portal_session.create({
-        redirect_url : "https://trakr.com/",
-        customer : {
-          id : data.customer_id
-          }
-      }).request(function(error,result) {
-        if(error){
-          //handle error
-          console.log(error);
-          return error
-        }else{
-          var portal_session = result.portal_session;
-          return portal_session
+      redirect_url : "https://trakr.com/",
+      customer : {
+        id : data.customer_id
         }
-      });
+    }).request(function(error,result) {
+      if(error){
+        //handle error
+        resolve(error)
+      }else{
+        var portal_session = result.portal_session;
+        resolve(portal_session)
+      }
+    })
+  })
 }
 
 module.exports.createPortalSession = createPortalSession

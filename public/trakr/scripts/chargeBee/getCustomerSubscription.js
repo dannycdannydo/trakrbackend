@@ -1,19 +1,24 @@
 var chargebee = require('chargebee');
 
-async function getCustomerSubscription (data) {
-  if(!data.email){
-    res.send({subscription: {status: false}})
+let getCustomerSubscription = async function getCustomerSubscription(data)
+{
+  return new Promise(async function(resolve, reject)
+  {
+    if(!data.email){
+      resolve({subscription: {status: false}})
+    }
+    chargebee.subscription.list({
+      "email[is]" : data.email
+    }).request(function(error,result) {
+      if(error){
+        //handle error
+        reject(error)
+      }else{
+          console.log(result.list[0])
+          resolve(result.list[0])
+        }
+      });
+    })
   }
-  chargebee.subscription.list({
-    "email[is]" : data.email
-  }).request(function(error,result) {
-    if(error){
-      //handle error
-      return error
-    }else{
-        return result.list[0]
-      }
-    });
-}
 
 module.exports.getCustomerSubscription = getCustomerSubscription

@@ -1,16 +1,20 @@
 var chargebee = require('chargebee');
 
-async function getCustomerFromEmail (data) {
-  chargebee.customer.list({
-    "email[is]" : data.email
-  }).request(function(error,result) {
-    if(error){
-      //handle error
-      return error
-    }else{
-        return result.list[0]
-      }
-    });
-}
+let getCustomerFromEmail = async function getCustomerFromEmail(data)
+{
+  return new Promise(async function(resolve, reject)
+  {
+    chargebee.customer.list({
+      "email[is]" : data.email
+    }).request(function(error,result) {
+      if(error){
+        //handle error
+        resolve(error)
+      }else{
+          resolve(result.list[0])
+        }
+      });
+    })
+  }
 
 module.exports.getCustomerFromEmail = getCustomerFromEmail
