@@ -8,7 +8,7 @@ let addMetaData = async function addMetaData(data)
         method: 'PATCH',
         url: 'https://dev--gfk8fe3.eu.auth0.com/api/v2/users/user_id',
         headers: {authorization: 'Bearer ABCD', 'content-type': 'application/json'},
-        data: {user_metadata: {customer: req.body}}
+        data: {user_metadata: {customer: data}}
       };
       axios.request(options).then(function (response) {
         console.log(response.data);
