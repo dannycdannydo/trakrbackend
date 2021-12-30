@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const { createCustomer } = require('../../../public/trakr/scripts/chargeBee/createCustomer')
-const { addMetaData } = require('./addMetaData')
+const { addMetaData } = require('../../../public/trakr/scripts/auth/addMetaData')
 
 
 
