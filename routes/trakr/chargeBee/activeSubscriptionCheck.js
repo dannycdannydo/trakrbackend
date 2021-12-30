@@ -8,7 +8,6 @@ router.post('/trakr/chargeBee/activeSubscriptionCheck', async function(req, res,
     const customer = await getCustomerFromEmail(req.body)
     req.body.id = customer.customer.id
   }
-  console.log(req.body.id)
   const customerSubscription = await getCustomerSubscription({ id: req.body.id })
   res.send(customerSubscription)
 });
