@@ -5,8 +5,11 @@ let updateMetaData = async function updateMetaData(data, userId)
 {
   return new Promise(async function(resolve, reject)
   {
-    const token = await getToken()
+    let token = await getToken()
+    token = JSON.parse(token)
     console.log(token)
+    console.log(token.access_token)
+    console.log(token.token_type)
     var options = {
         method: 'PATCH',
         url: 'https://dev--gfk8fe3.eu.auth0.com/api/v2/users/' + userId,
