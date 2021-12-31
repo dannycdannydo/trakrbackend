@@ -1,4 +1,4 @@
-var axios = require("axios").default;
+var request = require("request");
 
 let getToken = async function getToken()
 {
@@ -15,7 +15,7 @@ let getToken = async function getToken()
               audience: 'https://dev--gfk8fe3.eu.auth0.com/api/v2/'
             }
           };
-          axios.request(options, async function (error, response, body) {
+          request(options, async function (error, response, body) {
             resolve(body)
           });
     })
