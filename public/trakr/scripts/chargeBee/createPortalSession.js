@@ -6,7 +6,6 @@ let createPortalSession = async function createPortalSession(data)
   return new Promise(async function(resolve, reject)
   {
     chargebee.portal_session.create({
-      redirect_url : "https://trakr.com/",
       customer : {
         id : data.customer_id
         }
