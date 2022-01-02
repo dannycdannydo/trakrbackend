@@ -15,13 +15,16 @@
     "glob": "^7.2.0",
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
+    "jsonfile": "^6.1.0",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
     "mongodb": "^4.1.2",
     "morgan": "~1.9.1",
     "mquery": "^4.0.0",
     "ngrok": "^4.2.2",
+    "nodemailer": "^6.7.2",
     "request": "^2.88.2",
-    "stripe": "^8.195.0"
+    "stripe": "^8.195.0",
+    "winston": "^3.3.3"
   }
 }
