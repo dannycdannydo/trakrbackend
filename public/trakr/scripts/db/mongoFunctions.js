@@ -44,6 +44,26 @@ let mongoQuery = async function mongoQuery(database, collection, data, freq, sor
     })
 }
 
+let mongoReplace = async function mongoReplace(database, collection, id, update)
+{
+    return new Promise(async function(resolve, reject)
+    {
+        MongoClient.connect(uri, {useUnifiedTopology: true}, function(err, db) {
+            if (err) throw err;
+            var dbo = db.db(database);
+
+            dbo.collection(collection).replaceOne({"_id": ObjectId(id)}, update, function(err, result) {
+              if (err){
+                  console.log(err)
+                  reject()
+              }
+              db.close();
+              resolve(result)
+            });
+        }); 
+    })
+}
+
 
 let mongoSums = async function mongoSums(data)
 {
@@ -171,3 +191,4 @@ module.exports.mongoQuery = mongoQuery
 module.exports.brochureQueryMongoliser = brochureQueryMongoliser
 module.exports.lRegQueryMongoliser = lRegQueryMongoliser
 module.exports.mongoSums = mongoSums
+module.exports.mongoReplace = mongoReplace
