@@ -64,6 +64,25 @@ let mongoReplace = async function mongoReplace(database, collection, id, update)
     })
 }
 
+let mongoDelete = async function mongoDelete(database, collection, id)
+{
+    return new Promise(async function(resolve, reject)
+    {
+        MongoClient.connect(uri, {useUnifiedTopology: true}, function(err, db) {
+            if (err) throw err;
+            var dbo = db.db(database);
+            dbo.collection(collection).deleteOne({"_id": ObjectId(id)}, function(err, result) {
+              if (err){
+                  console.log(err)
+                  reject()
+              }
+              db.close();
+              resolve(result)
+            });
+        }); 
+    })
+}
+
 
 let mongoSums = async function mongoSums(data)
 {
@@ -192,3 +211,4 @@ module.exports.brochureQueryMongoliser = brochureQueryMongoliser
 module.exports.lRegQueryMongoliser = lRegQueryMongoliser
 module.exports.mongoSums = mongoSums
 module.exports.mongoReplace = mongoReplace
+module.exports.mongoDelete = mongoDelete
