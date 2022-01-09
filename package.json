@@ -6,6 +6,8 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "@azure/identity": "^2.0.1",
+    "@azure/storage-blob": "^12.8.0",
     "axios": "^0.24.0",
     "chargebee": "^2.8.0",
     "cookie-parser": "~1.4.4",

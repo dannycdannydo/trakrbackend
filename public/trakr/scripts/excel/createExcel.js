@@ -2,6 +2,7 @@ const ExcelJS = require('exceljs')
 const { assetSums } = require('../../../../public/trakr/scripts/sums/assetSums')
 var path = require('path')
 const fs = require('fs')
+const { getImage } = require('../storage/getImage')
 const workBookProperties = {
     creator: 'Trakr Limited',
     lastModifiedBy: 'Trakr Limited',
@@ -17,8 +18,9 @@ const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
 const columnProperties = {
     MyList: [
+        { header: 'Image', key: 'image', width: 15, vertAlign: 'middle', horizAlign: 'center' },
         { header: 'Address', key: 'address', width: 30, alignment: { vertical: 'middle', horizontal: 'left' } },
-        { header: 'Latitude, Longitude', key: 'latlng', width: 25, vertAlign: 'middle', horizAlign: 'center' },
+        { header: 'Latitude, Longitude', key: 'latlng', width: 25, alignment: { vertical: 'middle', horizontal: 'center' } },
         { header: 'Date', key: 'date', width: 15, alignment: { vertical: 'middle', horizontal: 'center' } },
         { header: 'Sectors', key: 'sectors', width: 30, alignment: { vertical: 'middle', horizontal: 'left' } },
         { header: 'Sub-Sectors', key: 'subsectors', width: 30, alignment: { vertical: 'middle', horizontal: 'left' } },
@@ -38,7 +40,7 @@ const topStylingProperties = {
 
 const excelImage = {
     MyList: {
-        path: '../../assets/TrakrHorizontal.png',
+        path: 'public/images/TrakrHorizontal.png',
         extension: 'png',
     },
 }
@@ -98,15 +100,25 @@ async function createExcel (data, template, sheetName, filename, res) {
     for (var d in data) {
         const row = getRow(data[d], template)
         worksheet.addRow(row)
+        const image = await getImage(data[d].base.filename)
+        fs.createWriteStream('./picture4.jpg').write(image);
+        const imageId = workbook.addImage({
+            buffer: image,
+            extension: 'jpg',
+          });
+        worksheet.addImage(imageId, `A${(d*1)+5}:A${(d*1)+5}`)
     }
     worksheet.addRow(await totalRow(data, template))
     worksheet = formatting(worksheet, template, data.length + 2)
     const image = await addImage(workbook, template)
     worksheet.addImage(image, {
-        tl: { col: 8.25, row: 0.5 },
-        br: { col: 9.9, row: 2.5 }
+        tl: { col: 9.25, row: 0.5 },
+        br: { col: 10.9, row: 2.5 }
       })
     worksheet = topStyling(worksheet, template)
+    for (var d in data) {
+        worksheet.getRow((d*1)+5).height = 50
+    }
     let buffer = await workbook.xlsx.writeBuffer()
     return buffer
 }
@@ -284,7 +296,7 @@ function topStyling (worksheet, template) {
 
 async function addImage (workbook, template) {
     const image = await workbook.addImage({
-        buffer: fs.readFileSync('public/images/TrakrHorizontal.png'),
+        buffer: fs.readFileSync(excelImage[template].path),
         extension: excelImage[template].extension,
     })
     return image
