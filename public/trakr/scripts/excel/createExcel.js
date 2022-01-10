@@ -1,8 +1,9 @@
 const ExcelJS = require('exceljs')
 const { assetSums } = require('../../../../public/trakr/scripts/sums/assetSums')
-var path = require('path')
 const fs = require('fs')
 const { getImage } = require('../storage/getImage')
+const libre = require('libreoffice-convert');
+libre.convertAsync = require('util').promisify(libre.convert);
 const workBookProperties = {
     creator: 'Trakr Limited',
     lastModifiedBy: 'Trakr Limited',
@@ -13,7 +14,6 @@ const workSheetProperties = {
         tabColor: { argb: '214b62' },
     },
 }
-
 const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
 const columnProperties = {
@@ -88,7 +88,7 @@ const stylingProperties = {
     },
 }
 
-async function createExcel (data, template, sheetName, filename, res) {
+async function createExcel (data, template, sheetName, pdf) {
     const workbook = new ExcelJS.Workbook()
     workbook.calcProperties.fullCalcOnLoad = true
     for (const [key, value] of Object.entries(workBookProperties)) {
@@ -101,7 +101,6 @@ async function createExcel (data, template, sheetName, filename, res) {
         const row = getRow(data[d], template)
         worksheet.addRow(row)
         const image = await getImage(data[d].base.filename)
-        fs.createWriteStream('./picture4.jpg').write(image);
         const imageId = workbook.addImage({
             buffer: image,
             extension: 'jpg',
@@ -119,7 +118,11 @@ async function createExcel (data, template, sheetName, filename, res) {
     for (var d in data) {
         worksheet.getRow((d*1)+5).height = 50
     }
-    let buffer = await workbook.xlsx.writeBuffer()
+    let buffer
+    if (pdf) {
+    } else {
+        buffer = await workbook.xlsx.writeBuffer()
+    }
     return buffer
 }
 
