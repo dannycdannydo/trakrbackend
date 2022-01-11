@@ -20,7 +20,8 @@ package-lock.json
 *.gz
 
 # config
-config
+config/env/env.json
+config/env/test.js
 
 
 # Coveralls
