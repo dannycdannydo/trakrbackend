@@ -1,4 +1,5 @@
 var request = require("request");
+var config = require('../../../../config/config')
 
 let getToken = async function getToken()
 {
@@ -10,8 +11,8 @@ let getToken = async function getToken()
             headers: {'content-type': 'application/x-www-form-urlencoded'},
             form: {
               grant_type: 'client_credentials',
-              client_id: 'LP48c6v4MBVnwPBi5S3RO377umRA4ba3',
-              client_secret: 'ZypNmP9E4s_jwPx5Bc9QM894qFQqCepdJJ465QD7Aak8J1qYm07Ldl7SneizfSZa',
+              client_id: config.authClientId,
+              client_secret: config.authClientSecret,
               audience: 'https://dev--gfk8fe3.eu.auth0.com/api/v2/'
             }
           };

@@ -29,10 +29,12 @@ module.exports = () => express()
     res.status(error.status || 500).json({ error })
 })
 
+const config = require('./config/config')
+
 chargebee.configure({
-  site : "trakr-test", 
-  api_key : "test_gaoEIKIjfqGgP11Khq9lWLBEtEGcupcBm",
-  // site : "trakr",
-  // api_key : 'live_KE0M4xJUjjqSvzacd3SsSuzj1VYSIZPAf',
+  site : config.chargebeeSiteTest, 
+  api_key : config.chargeBeeApiKeyTest,
+  // site : config.chargebeeSite, 
+  // api_key : config.chargeBeeApiKey,
 });
 

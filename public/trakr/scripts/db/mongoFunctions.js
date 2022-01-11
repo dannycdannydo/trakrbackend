@@ -1,6 +1,6 @@
 const MongoClient = require('mongodb').MongoClient;
-// const uri = "mongodb+srv://dannycdannydo:Xz06&!y796@cluster0.c9qdu.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
-const uri = "mongodb://dannycdannydo:Xz06&!y796@cluster0-shard-00-00.c9qdu.mongodb.net:27017,cluster0-shard-00-01.c9qdu.mongodb.net:27017,cluster0-shard-00-02.c9qdu.mongodb.net:27017/myFirstDatabase?ssl=true&replicaSet=atlas-5ecmiw-shard-0&authSource=admin&retryWrites=true&w=majority"
+const config = require('../../../../config/config')
+const uri = config.trakrDBConnectionString
 var ObjectId = require('mongodb').ObjectId; 
 
 let mongoInsert = async function mongoInsert(database, collection, data)
