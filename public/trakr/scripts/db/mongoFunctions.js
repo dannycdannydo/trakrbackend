@@ -8,17 +8,15 @@ let mongoInsert = async function mongoInsert(database, collection, data)
     return new Promise(async function(resolve, reject)
     {
         MongoClient.connect(uri, {useUnifiedTopology: true}, async function(err, db) {
-            if (err) {console.log(err)
+            if (err) {
                 throw err};
             var dbo = db.db(database);
             await dbo.collection(collection).insertOne(data, async function(err, res) {
             if (err){
-                console.log(err)
                 if(err.code = 11000){
                     resolve("Duplicate")
                 }
             }
-            console.log("1 document inserted");
             db.close();
             resolve('Success')
             });
@@ -35,7 +33,6 @@ let mongoQuery = async function mongoQuery(database, collection, data, freq, sor
             var dbo = db.db(database);
             dbo.collection(collection).find(data).sort(sort).limit(freq).toArray(function(err, result) {
               if (err){
-                  console.log(err)
                   reject()
               }
               db.close();
@@ -55,7 +52,6 @@ let mongoReplace = async function mongoReplace(database, collection, id, update)
 
             dbo.collection(collection).replaceOne({"_id": ObjectId(id)}, update, function(err, result) {
               if (err){
-                  console.log(err)
                   reject()
               }
               db.close();
@@ -74,7 +70,6 @@ let mongoDelete = async function mongoDelete(database, collection, id)
             var dbo = db.db(database);
             dbo.collection(collection).deleteOne({"_id": ObjectId(id)}, function(err, result) {
               if (err){
-                  console.log(err)
                   reject()
               }
               db.close();

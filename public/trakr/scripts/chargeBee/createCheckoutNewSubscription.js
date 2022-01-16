@@ -28,7 +28,6 @@ let createCheckoutNewSubscription = async function createCheckoutNewSubscription
     }).request(function(error,result) {
       if(error){
         //handle error
-        console.log(error)
         resolve(error)
       }else{
         var hosted_page = result.hosted_page;

@@ -44,7 +44,6 @@ const geocode = async function geocode (address) {
                             resolve(result)
                         }
                     } catch (err) {
-                        console.log(err)
                     }
                 }
             })

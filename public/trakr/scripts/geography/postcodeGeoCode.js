@@ -17,7 +17,6 @@ const postcodeGeoCode = async function postcodeGeoCode (pcode) {
                     } else {
                         result.status = 'invalid'
                     }
-                    console.log(result)
                     resolve(result)
                 }
             })

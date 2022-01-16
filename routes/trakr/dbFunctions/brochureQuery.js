@@ -2,8 +2,9 @@ var express = require('express');
 var router = express.Router();
 const { brochureQueryMongoliser, mongoQuery, mongoSums } = require('../../../public/trakr/scripts/db/mongoFunctions')
 const _ = require('lodash')
+const { jwtCheck } = require('../../../public/trakr/scripts/auth/jwtCheck')
 
-router.post('/trakr/dbFunctions/brochureQuery', async function(req, res, next) {
+router.post('/trakr/dbFunctions/brochureQuery', jwtCheck, async function(req, res, next) {
     const exclude = []
     if (req.body.exclude) {
         for (var e in req.body.exclude) {

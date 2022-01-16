@@ -1,7 +1,6 @@
 var config = {};
 //development
 var env = process.env.NODE_ENV || 'development';
-console.log(env)
 if(env === 'development'){
   config = require('./env/development');
 }else if (env === 'test'){

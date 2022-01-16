@@ -9,7 +9,6 @@ let getCustomerFromEmail = async function getCustomerFromEmail(data)
     }).request(function(error,result) {
       if(error){
         //handle error
-        console.log(error)
         resolve(error)
       }else{
           resolve(result.list[0])
