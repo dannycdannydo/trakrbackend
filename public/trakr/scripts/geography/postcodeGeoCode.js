@@ -14,6 +14,7 @@ const postcodeGeoCode = async function postcodeGeoCode (pcode) {
                     if (response.status === 200 && response.statusText === 'OK') {
                         result.latitude = response.data.result.latitude
                         result.longitude = response.data.result.longitude
+                        result.fullResult = response.data.result
                     } else {
                         result.status = 'invalid'
                     }
