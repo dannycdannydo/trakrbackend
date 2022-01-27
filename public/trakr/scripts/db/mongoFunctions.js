@@ -13,7 +13,9 @@ let mongoInsert = async function mongoInsert(database, collection, data)
             var dbo = db.db(database);
             await dbo.collection(collection).insertOne(data, async function(err, res) {
             if (err){
+                console.log(err)
                 if(err.code = 11000){
+                    db.close();
                     resolve("Duplicate")
                 }
             }

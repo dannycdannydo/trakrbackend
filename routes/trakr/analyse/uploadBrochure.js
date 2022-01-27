@@ -8,7 +8,6 @@ router.post('/trakr/analyse/brochureUpload', upload.single('file'), async functi
     const file = req.file
     const uploaderEmail = req.headers.uploaderemail
     const result = await fullProcess.fullProcess(file, uploaderEmail)
-    console.log(result)
     res.send(result)
 });
 

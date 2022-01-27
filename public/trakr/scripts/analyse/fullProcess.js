@@ -39,14 +39,64 @@ async function fullProcess(file, uploader)
 {
     return new Promise (async function(resolve, reject)
     {
+        let result = null
+        try{
+            result = await fullProcessRun(file, uploader)
+        } catch (err) {
+            if (!file.originalname) {
+                file.originalname = moment()
+            }
+            await uploadFile(file.buffer, moment(), 'testcontainerfail', file.originalname, finalForm.meta.filetype)
+            resolve( { succeeded:uniqueFiles, dupes: dupeFiles, fails: fails })
+        }
+        resolve(result)
+    })
+}
+
+async function fullProcessRun(file, uploader)
+{
+    return new Promise (async function(resolve, reject)
+    {
+        const finalForm = {
+            base: {
+                portfolio: null,
+                loc: { type: null, coordinates: null },
+                filename: null,
+                town: null,
+                region: null,
+                postcode: null,
+            },
+            meta: {
+                dateCreated: null,
+                dateAdded: moment().format(),
+                uploader: 'Trakr',
+                filetype: null,
+                manualUpload: 0,
+            },
+            sectors: [],
+            subsectors: [],
+            figures: {
+                rent: null,
+                price: null,
+                yield: null,
+            },
+            agencies: [],
+            tenants: [],
+        }
         let uniqueFiles = 0
         let dupeFiles = 0
+        let fails = 0
         let pdfData = {}
         await getText.getText(file.buffer).then(function (result) {
             pdfData = result
         })
         .catch(async function (err) {
-            console.log(err)
+            if (!file.originalname) {
+                file.originalname = moment()
+            }
+            await uploadFile(file.buffer, finalForm.base.filename, 'testcontainerfail', file.originalname, finalForm.meta.filetype)
+            fails++
+            resolve( { succeeded:uniqueFiles, dupes: dupeFiles, fails: fails })
         })
         finalForm.meta.dateCreated = pdfData.date
         finalForm.meta.dateAdded = moment().format()
@@ -86,21 +136,25 @@ async function fullProcess(file, uploader)
                     finalForm.base[key] = value
                 }
             })
-            .catch(function () {
+            .catch(function (err) {
+                console.log(err)
             })
         }
         await getTenants.getTenants(pdfData.text, finalForm.agencies).then(function (result) {
             finalForm.tenants = result
         })
-        .catch(function () {
+        .catch(function (err) {
+            console.log(err)
         })
         await getFilename.getFilename(finalForm, pdfData.text.replace(/\W/g, '')).then(function (result) {
             finalForm.base.filename = result
         })
-        .catch(function () {
+        .catch(function (err) {
+            console.log(err)
         })
-        if(finalForm.base.portfolio == "0" && finalForm.sectors && finalForm.sectors[0] && finalForm.base.loc.coordinates[0]){
+        if(finalForm.base.portfolio == "0" && finalForm.sectors && finalForm.sectors[0] && finalForm.base.loc && finalForm.base.loc.coordinates && finalForm.base.loc.coordinates[0]){
             const res = await mongoInsert("trakr", "trakrtest", finalForm)
+            console.log(res)
             if (res === 'Success') {
                 uniqueFiles++
             } else if (res === 'Duplicate') {
@@ -136,15 +190,18 @@ async function fullProcess(file, uploader)
         if(finalForm.base && finalForm.base.portfolio == '1'){
             if(!finalForm.base.address){
                 container = "failed"
+                fails++
             }
         }
-        else if(!finalForm.sectors || !finalForm.sectors[0] || !finalForm.base.loc.coordinates[0]){
+        else if(!finalForm.sectors || !finalForm.sectors[0] || !finalForm.base.loc || !finalForm.base.loc.coordinates || !finalForm.base.loc.coordinates[0]){
             container = "failed"
+            fails++
         }
         await uploadFile(file.buffer, finalForm.base.filename, container, file.originalname, finalForm.meta.filetype)
-        resolve( { succeeded:uniqueFiles, dupes: dupeFiles })
+        resolve( { succeeded:uniqueFiles, dupes: dupeFiles, fails: fails })
     })
 }
 
 
 module.exports.fullProcess = fullProcess
+module.exports.fullProcessRun = fullProcessRun

@@ -64,7 +64,7 @@ async function getLocation(sentences, text)
                     }).catch(function (err) {
                     })
                 //if that fails, try google
-                if(addressPriority.status == "invalid" && sentences[i].match(rx)){
+                if(addressPriority.status == "invalid" && sentences[i] && sentences[i] && sentences[i].match(rx)){
                     await geocode.geocode(sentences[i].match(rx)[0]).then(function (result) {
                     addressPriority = result
                     addressPriority.fullResult.longitude = addressPriority.Longitude
@@ -429,7 +429,11 @@ let partialaddress = async function partial_address(address, sentences){
                 result = result.replace(/\W/g, '')
             }
             //add it to a string with town name and united kingdom
-            result = result + ", " + address.town + ", United Kingdom"
+            if (address && address.town) {
+                result = result + ", " + address.town + ", United Kingdom"
+            } else {
+                result = result + ", United Kingdom"
+            }
             result = titleCase(result)
         }
         catch(err){

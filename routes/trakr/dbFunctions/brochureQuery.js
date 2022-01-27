@@ -24,7 +24,7 @@ router.post('/trakr/dbFunctions/brochureQuery', async function(req, res, next) {
   }
   const mongolisedQuery = await brochureQueryMongoliser(data)
   let result = {}
-  result.assets = await mongoQuery('trakr', 'brochures', mongolisedQuery, freq, sort)
+  result.assets = await mongoQuery('trakr', 'trakrtest', mongolisedQuery, freq, sort)
   result.sums = await mongoSums(_.cloneDeep(result.assets))
   if (exclude.length > 0 && exclude.includes('assets')) {
       delete result.assets
