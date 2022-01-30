@@ -1,0 +1,421 @@
+
+{
+  "header": {
+    "reportVersion": 1,
+    "event": "Allocation failed - JavaScript heap out of memory",
+    "trigger": "FatalError",
+    "filename": "report.20220130.002132.8008.0.001.json",
+    "dumpEventTime": "2022-01-30T00:21:32Z",
+    "dumpEventTimeStamp": "1643502092892",
+    "processId": 8008,
+    "cwd": "C:\\Users\\danie\\Documents\\DEV\\Trakr\\Backend",
+    "commandLine": [
+      "node",
+      "./bin/www"
+    ],
+    "nodejsVersion": "v12.16.1",
+    "wordSize": 64,
+    "arch": "x64",
+    "platform": "win32",
+    "componentVersions": {
+      "node": "12.16.1",
+      "v8": "7.8.279.23-node.31",
+      "uv": "1.34.0",
+      "zlib": "1.2.11",
+      "brotli": "1.0.7",
+      "ares": "1.15.0",
+      "modules": "72",
+      "nghttp2": "1.40.0",
+      "napi": "5",
+      "llhttp": "2.0.4",
+      "http_parser": "2.9.3",
+      "openssl": "1.1.1d",
+      "cldr": "35.1",
+      "icu": "64.2",
+      "tz": "2019c",
+      "unicode": "12.1"
+    },
+    "release": {
+      "name": "node",
+      "lts": "Erbium",
+      "headersUrl": "https://nodejs.org/download/release/v12.16.1/node-v12.16.1-headers.tar.gz",
+      "sourceUrl": "https://nodejs.org/download/release/v12.16.1/node-v12.16.1.tar.gz",
+      "libUrl": "https://nodejs.org/download/release/v12.16.1/win-x64/node.lib"
+    },
+    "osName": "Windows_NT",
+    "osRelease": "10.0.19043",
+    "osVersion": "Windows 10 Home",
+    "osMachine": "x86_64",
+    "cpus": [
+      {
+        "model": "Intel(R) Core(TM) i5-4670 CPU @ 3.40GHz",
+        "speed": 3400,
+        "user": 3659515,
+        "nice": 0,
+        "sys": 1991656,
+        "idle": 34900875,
+        "irq": 246656
+      },
+      {
+        "model": "Intel(R) Core(TM) i5-4670 CPU @ 3.40GHz",
+        "speed": 3400,
+        "user": 4477250,
+        "nice": 0,
+        "sys": 1910359,
+        "idle": 34164312,
+        "irq": 25000
+      },
+      {
+        "model": "Intel(R) Core(TM) i5-4670 CPU @ 3.40GHz",
+        "speed": 3400,
+        "user": 4616890,
+        "nice": 0,
+        "sys": 2164953,
+        "idle": 33770078,
+        "irq": 20546
+      },
+      {
+        "model": "Intel(R) Core(TM) i5-4670 CPU @ 3.40GHz",
+        "speed": 3400,
+        "user": 4967703,
+        "nice": 0,
+        "sys": 2635875,
+        "idle": 32948343,
+        "irq": 17125
+      }
+    ],
+    "networkInterfaces": [
+      {
+        "name": "Ethernet",
+        "internal": false,
+        "mac": "44:8a:5b:5d:ab:68",
+        "address": "2a00:23c5:f:c701:d06e:88a7:12b0:4f5e",
+        "netmask": "ffff:ffff:ffff:ffff::",
+        "family": "IPv6",
+        "scopeid": 0
+      },
+      {
+        "name": "Ethernet",
+        "internal": false,
+        "mac": "44:8a:5b:5d:ab:68",
+        "address": "2a00:23c5:f:c701:3537:fc52:6809:4e1e",
+        "netmask": "ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+        "family": "IPv6",
+        "scopeid": 0
+      },
+      {
+        "name": "Ethernet",
+        "internal": false,
+        "mac": "44:8a:5b:5d:ab:68",
+        "address": "fe80::d06e:88a7:12b0:4f5e",
+        "netmask": "ffff:ffff:ffff:ffff::",
+        "family": "IPv6",
+        "scopeid": 7
+      },
+      {
+        "name": "Ethernet",
+        "internal": false,
+        "mac": "44:8a:5b:5d:ab:68",
+        "address": "192.168.1.87",
+        "netmask": "255.255.255.0",
+        "family": "IPv4"
+      },
+      {
+        "name": "Loopback Pseudo-Interface 1",
+        "internal": true,
+        "mac": "00:00:00:00:00:00",
+        "address": "::1",
+        "netmask": "ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+        "family": "IPv6",
+        "scopeid": 0
+      },
+      {
+        "name": "Loopback Pseudo-Interface 1",
+        "internal": true,
+        "mac": "00:00:00:00:00:00",
+        "address": "127.0.0.1",
+        "netmask": "255.0.0.0",
+        "family": "IPv4"
+      }
+    ],
+    "host": "DESKTOP-B9TK6Q4"
+  },
+  "javascriptStack": {
+    "message": "No stack.",
+    "stack": [
+      "Unavailable."
+    ]
+  },
+  "nativeStack": [
+    {
+      "pc": "0x00007ff7407a19f9",
+      "symbol": "std::basic_ostream<char,std::char_traits<char> >::operator<<+10873"
+    },
+    {
+      "pc": "0x00007ff7407a5e1c",
+      "symbol": "std::basic_ostream<char,std::char_traits<char> >::operator<<+28316"
+    },
+    {
+      "pc": "0x00007ff7407a4dd8",
+      "symbol": "std::basic_ostream<char,std::char_traits<char> >::operator<<+24152"
+    },
+    {
+      "pc": "0x00007ff7408a34cb",
+      "symbol": "v8::base::CPU::has_sse+38363"
+    },
+    {
+      "pc": "0x00007ff7410b9f4e",
+      "symbol": "v8::Isolate::ReportExternalAllocationLimitReached+94"
+    },
+    {
+      "pc": "0x00007ff7410a2021",
+      "symbol": "v8::SharedArrayBuffer::Externalize+833"
+    },
+    {
+      "pc": "0x00007ff740f6e57c",
+      "symbol": "v8::internal::Heap::EphemeronKeyWriteBarrierFromCode+1436"
+    },
+    {
+      "pc": "0x00007ff740f797d0",
+      "symbol": "v8::internal::Heap::ProtectUnprotectedMemoryChunks+1312"
+    },
+    {
+      "pc": "0x00007ff740f762f4",
+      "symbol": "v8::internal::Heap::PageFlagsAreConsistent+3204"
+    },
+    {
+      "pc": "0x00007ff740f6bb13",
+      "symbol": "v8::internal::Heap::CollectGarbage+1283"
+    },
+    {
+      "pc": "0x00007ff740f6a184",
+      "symbol": "v8::internal::Heap::AddRetainedMap+2452"
+    },
+    {
+      "pc": "0x00007ff740f8b36d",
+      "symbol": "v8::internal::Factory::NewFillerObject+61"
+    },
+    {
+      "pc": "0x00007ff740cf0c51",
+      "symbol": "v8::internal::interpreter::JumpTableTargetOffsets::iterator::operator=+1665"
+    },
+    {
+      "pc": "0x00007ff741504ddd",
+      "symbol": "v8::internal::SetupIsolateDelegate::SetupHeap+546637"
+    },
+    {
+      "pc": "0x00007ff74156d95e",
+      "symbol": "v8::internal::SetupIsolateDelegate::SetupHeap+975566"
+    },
+    {
+      "pc": "0x00007ff741489d8c",
+      "symbol": "v8::internal::SetupIsolateDelegate::SetupHeap+42748"
+    },
+    {
+      "pc": "0x00007ff7414830bc",
+      "symbol": "v8::internal::SetupIsolateDelegate::SetupHeap+14892"
+    },
+    {
+      "pc": "0x00007ff741489d8c",
+      "symbol": "v8::internal::SetupIsolateDelegate::SetupHeap+42748"
+    },
+    {
+      "pc": "0x00007ff741489d8c",
+      "symbol": "v8::internal::SetupIsolateDelegate::SetupHeap+42748"
+    },
+    {
+      "pc": "0x00007ff741489d8c",
+      "symbol": "v8::internal::SetupIsolateDelegate::SetupHeap+42748"
+    },
+    {
+      "pc": "0x0000003ca7e124fc",
+      "symbol": ""
+    }
+  ],
+  "javascriptHeap": {
+    "totalMemory": 2154532864,
+    "totalCommittedMemory": 2154532864,
+    "usedMemory": 2146084576,
+    "availableMemory": 48384352,
+    "memoryLimit": 2197815296,
+    "heapSpaces": {
+      "read_only_space": {
+        "memorySize": 262144,
+        "committedMemory": 262144,
+        "capacity": 32808,
+        "used": 32808,
+        "available": 0
+      },
+      "new_space": {
+        "memorySize": 5242880,
+        "committedMemory": 5242880,
+        "capacity": 2618640,
+        "used": 347776,
+        "available": 2270864
+      },
+      "old_space": {
+        "memorySize": 2099134464,
+        "committedMemory": 2099134464,
+        "capacity": 2096726808,
+        "used": 2096514392,
+        "available": 212416
+      },
+      "code_space": {
+        "memorySize": 692224,
+        "committedMemory": 692224,
+        "capacity": 457696,
+        "used": 457696,
+        "available": 0
+      },
+      "map_space": {
+        "memorySize": 1576960,
+        "committedMemory": 1576960,
+        "capacity": 1264400,
+        "used": 1264400,
+        "available": 0
+      },
+      "large_object_space": {
+        "memorySize": 47575040,
+        "committedMemory": 47575040,
+        "capacity": 47464720,
+        "used": 47464720,
+        "available": 0
+      },
+      "code_large_object_space": {
+        "memorySize": 49152,
+        "committedMemory": 49152,
+        "capacity": 2784,
+        "used": 2784,
+        "available": 0
+      },
+      "new_large_object_space": {
+        "memorySize": 0,
+        "committedMemory": 0,
+        "capacity": 2618640,
+        "used": 0,
+        "available": 2618640
+      }
+    }
+  },
+  "resourceUsage": {
+    "userCpuSeconds": 80.812,
+    "kernelCpuSeconds": 2.64,
+    "cpuConsumptionPercent": 24.33,
+    "maxRss": 2550239232,
+    "pageFaults": {
+      "IORequired": 940863,
+      "IONotRequired": 0
+    },
+    "fsActivity": {
+      "reads": 1766,
+      "writes": 5
+    }
+  },
+  "libuv": [
+  ],
+  "environmentVariables": {
+    "=C:": "C:\\Users\\danie\\Documents\\DEV\\Trakr\\Backend",
+    "ALLUSERSPROFILE": "C:\\ProgramData",
+    "APPDATA": "C:\\Users\\danie\\AppData\\Roaming",
+    "azcopy": "C:\\Users\\danie\\Documents\\Trakr\\DEV\\azcopy.exe",
+    "ChocolateyInstall": "C:\\ProgramData\\chocolatey",
+    "ChocolateyLastPathUpdate": "132554730416868385",
+    "CHROME_CRASHPAD_PIPE_NAME": "\\\\.\\pipe\\crashpad_10176_ZELYDPTDHLLSYNHP",
+    "COLORTERM": "truecolor",
+    "CommonProgramFiles": "C:\\Program Files\\Common Files",
+    "CommonProgramFiles(x86)": "C:\\Program Files (x86)\\Common Files",
+    "CommonProgramW6432": "C:\\Program Files\\Common Files",
+    "COMPUTERNAME": "DESKTOP-B9TK6Q4",
+    "ComSpec": "C:\\WINDOWS\\system32\\cmd.exe",
+    "DriverData": "C:\\Windows\\System32\\Drivers\\DriverData",
+    "FPS_BROWSER_APP_PROFILE_STRING": "Internet Explorer",
+    "FPS_BROWSER_USER_PROFILE_STRING": "Default",
+    "GH_TOKEN": "e52bf83cb0037c2944353a453f88c01e398a49dc",
+    "GIT_ASKPASS": "c:\\Users\\danie\\AppData\\Local\\Programs\\Microsoft VS Code\\resources\\app\\extensions\\git\\dist\\askpass.sh",
+    "HOMEDRIVE": "C:",
+    "HOMEPATH": "\\Users\\danie",
+    "LANG": "en_GB.UTF-8",
+    "LOCALAPPDATA": "C:\\Users\\danie\\AppData\\Local",
+    "LOGONSERVER": "\\\\DESKTOP-B9TK6Q4",
+    "NUMBER_OF_PROCESSORS": "4",
+    "OneDrive": "C:\\Users\\danie\\PK3",
+    "OneDriveCommercial": "C:\\Users\\danie\\PK3",
+    "ORIGINAL_XDG_CURRENT_DESKTOP": "undefined",
+    "OS": "Windows_NT",
+    "Path": "C:\\Program Files\\ImageMagick-7.0.11-Q16-HDRI\\convert.exe;C:\\Program Files\\ImageMagick-7.0.11-Q16-HDRI;C:\\Python39\\Scripts\\;C:\\Python39\\;c:\\program files\\graphicsmagick-1.3.35-q16;C:\\Program Files\\ImageMagick-7.0.10-Q16-HDRI;C:\\Program Files (x86)\\Microsoft SDKs\\Azure\\CLI2\\wbin;C:\\Program Files (x86)\\Common Files\\Oracle\\Java\\javapath;C:\\Python27\\;C:\\Python27\\Scripts;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\WINDOWS\\System32\\OpenSSH\\;C:\\Program Files\\dotnet\\;C:\\Program Files\\Microsoft SQL Server\\130\\Tools\\Binn\\;C:\\Program Files\\Microsoft SQL Server\\Client SDK\\ODBC\\170\\Tools\\Binn\\;C:\\Program Files (x86)\\Microsoft SQL Server\\150\\Tools\\Binn\\;C:\\Program Files\\Microsoft SQL Server\\150\\Tools\\Binn\\;C:\\Program Files\\Microsoft SQL Server\\150\\DTS\\Binn\\;C:\\Program Files (x86)\\Microsoft SQL Server\\150\\DTS\\Binn\\;C:\\Program Files (x86)\\Microsoft SQL Server\\110\\DTS\\Binn\\;C:\\Program Files (x86)\\Microsoft SQL Server\\120\\DTS\\Binn\\;C:\\Program Files (x86)\\Microsoft SQL Server\\130\\DTS\\Binn\\;C:\\Program Files (x86)\\Microsoft SQL Server\\140\\DTS\\Binn\\;C:\\Program Files\\Microsoft SQL Server\\Client SDK\\ODBC\\130\\Tools\\Binn\\;C:\\Program Files (x86)\\Microsoft SQL Server\\140\\Tools\\Binn\\;C:\\Program Files\\Microsoft SQL Server\\140\\Tools\\Binn\\;C:\\Program Files\\Microsoft SQL Server\\140\\DTS\\Binn\\;C:\\Program Files\\nodejs\\;C:\\ProgramData\\chocolatey\\bin;C:\\Program Files (x86)\\NVIDIA Corporation\\PhysX\\Common;C:\\Program Files\\NVIDIA Corporation\\NVIDIA NvDLISR;C:\\Program Files\\Git\\cmd;C:\\Program Files\\Amazon\\AWSCLIV2\\;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\WINDOWS\\System32\\OpenSSH\\;C:\\Users\\danie\\Documents\\Trakr\\DEV\\AzCopy;;C:\\Program Files\\Azure Data Studio\\bin;C:\\Users\\danie\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Users\\danie\\AppData\\Local\\Google\\Cloud SDK\\google-cloud-sdk\\bin;C:\\Users\\danie\\AppData\\Roaming\\npm;C:\\Users\\danie\\AppData\\Local\\Programs\\Microsoft VS Code\\bin;C:\\Users\\danie\\.dotnet\\tools;C:\\Program Files\\heroku\\bin;C:\\Users\\danie\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Program Files\\Tesseract-OCR;C:\\Users\\danie\\Documents\\Trakr\\DEV\\azcopy.exe;C:\\Program Files\\Azure Data Studio\\bin;C:\\Users\\danie\\AppData\\Local\\GitHubDesktop\\bin;C:\\Users\\danie\\AppData\\Local\\Programs\\mongosh\\",
+    "PATH": "C:\\Users\\danie\\Documents\\DEV\\Trakr\\Backend/node_modules/.bin:C:\\Program Files\\ImageMagick-7.0.11-Q16-HDRI\\convert.exe;C:\\Program Files\\ImageMagick-7.0.11-Q16-HDRI;C:\\Python39\\Scripts\\;C:\\Python39\\;c:\\program files\\graphicsmagick-1.3.35-q16;C:\\Program Files\\ImageMagick-7.0.10-Q16-HDRI;C:\\Program Files (x86)\\Microsoft SDKs\\Azure\\CLI2\\wbin;C:\\Program Files (x86)\\Common Files\\Oracle\\Java\\javapath;C:\\Python27\\;C:\\Python27\\Scripts;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\WINDOWS\\System32\\OpenSSH\\;C:\\Program Files\\dotnet\\;C:\\Program Files\\Microsoft SQL Server\\130\\Tools\\Binn\\;C:\\Program Files\\Microsoft SQL Server\\Client SDK\\ODBC\\170\\Tools\\Binn\\;C:\\Program Files (x86)\\Microsoft SQL Server\\150\\Tools\\Binn\\;C:\\Program Files\\Microsoft SQL Server\\150\\Tools\\Binn\\;C:\\Program Files\\Microsoft SQL Server\\150\\DTS\\Binn\\;C:\\Program Files (x86)\\Microsoft SQL Server\\150\\DTS\\Binn\\;C:\\Program Files (x86)\\Microsoft SQL Server\\110\\DTS\\Binn\\;C:\\Program Files (x86)\\Microsoft SQL Server\\120\\DTS\\Binn\\;C:\\Program Files (x86)\\Microsoft SQL Server\\130\\DTS\\Binn\\;C:\\Program Files (x86)\\Microsoft SQL Server\\140\\DTS\\Binn\\;C:\\Program Files\\Microsoft SQL Server\\Client SDK\\ODBC\\130\\Tools\\Binn\\;C:\\Program Files (x86)\\Microsoft SQL Server\\140\\Tools\\Binn\\;C:\\Program Files\\Microsoft SQL Server\\140\\Tools\\Binn\\;C:\\Program Files\\Microsoft SQL Server\\140\\DTS\\Binn\\;C:\\Program Files\\nodejs\\;C:\\ProgramData\\chocolatey\\bin;C:\\Program Files (x86)\\NVIDIA Corporation\\PhysX\\Common;C:\\Program Files\\NVIDIA Corporation\\NVIDIA NvDLISR;C:\\Program Files\\Git\\cmd;C:\\Program Files\\Amazon\\AWSCLIV2\\;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\WINDOWS\\System32\\OpenSSH\\;C:\\Users\\danie\\Documents\\Trakr\\DEV\\AzCopy;;C:\\Program Files\\Azure Data Studio\\bin;C:\\Users\\danie\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Users\\danie\\AppData\\Local\\Google\\Cloud SDK\\google-cloud-sdk\\bin;C:\\Users\\danie\\AppData\\Roaming\\npm;C:\\Users\\danie\\AppData\\Local\\Programs\\Microsoft VS Code\\bin;C:\\Users\\danie\\.dotnet\\tools;C:\\Program Files\\heroku\\bin;C:\\Users\\danie\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Program Files\\Tesseract-OCR;C:\\Users\\danie\\Documents\\Trakr\\DEV\\azcopy.exe;C:\\Program Files\\Azure Data Studio\\bin;C:\\Users\\danie\\AppData\\Local\\GitHubDesktop\\bin;C:\\Users\\danie\\AppData\\Local\\Programs\\mongosh\\",
+    "PATHEXT": ".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.CPL",
+    "PROCESSOR_ARCHITECTURE": "AMD64",
+    "PROCESSOR_IDENTIFIER": "Intel64 Family 6 Model 60 Stepping 3, GenuineIntel",
+    "PROCESSOR_LEVEL": "6",
+    "PROCESSOR_REVISION": "3c03",
+    "ProgramData": "C:\\ProgramData",
+    "ProgramFiles": "C:\\Program Files",
+    "ProgramFiles(x86)": "C:\\Program Files (x86)",
+    "ProgramW6432": "C:\\Program Files",
+    "PROMPT": "$P$G",
+    "PSModulePath": "C:\\Users\\danie\\Documents\\WindowsPowerShell\\Modules;C:\\Users\\danie\\AppData\\Local\\Google\\Cloud SDK\\google-cloud-sdk\\platform\\PowerShell;C:\\Program Files\\WindowsPowerShell\\Modules;C:\\WINDOWS\\system32\\WindowsPowerShell\\v1.0\\Modules;C:\\Program Files (x86)\\Microsoft SQL Server\\150\\Tools\\PowerShell\\Modules\\;C:\\Program Files (x86)\\Microsoft SQL Server\\140\\Tools\\PowerShell\\Modules\\",
+    "PUBLIC": "C:\\Users\\Public",
+    "SESSIONNAME": "Console",
+    "SystemDrive": "C:",
+    "SystemRoot": "C:\\WINDOWS",
+    "TEMP": "C:\\Users\\danie\\AppData\\Local\\Temp",
+    "TERM_PROGRAM": "vscode",
+    "TERM_PROGRAM_VERSION": "1.63.2",
+    "TMP": "C:\\Users\\danie\\AppData\\Local\\Temp",
+    "USERDOMAIN": "DESKTOP-B9TK6Q4",
+    "USERDOMAIN_ROAMINGPROFILE": "DESKTOP-B9TK6Q4",
+    "USERNAME": "danie",
+    "USERPROFILE": "C:\\Users\\danie",
+    "VS140COMNTOOLS": "C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\Common7\\Tools\\",
+    "VSCODE_GIT_ASKPASS_EXTRA_ARGS": "--ms-enable-electron-run-as-node",
+    "VSCODE_GIT_ASKPASS_MAIN": "c:\\Users\\danie\\AppData\\Local\\Programs\\Microsoft VS Code\\resources\\app\\extensions\\git\\dist\\askpass-main.js",
+    "VSCODE_GIT_ASKPASS_NODE": "C:\\Users\\danie\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe",
+    "VSCODE_GIT_IPC_HANDLE": "\\\\.\\pipe\\vscode-git-7485001efd-sock",
+    "windir": "C:\\WINDOWS"
+  },
+  "sharedObjects": [
+    "C:\\Program Files\\nodejs\\node.exe",
+    "C:\\WINDOWS\\SYSTEM32\\ntdll.dll",
+    "C:\\WINDOWS\\System32\\KERNEL32.DLL",
+    "C:\\WINDOWS\\System32\\KERNELBASE.dll",
+    "C:\\WINDOWS\\System32\\WS2_32.dll",
+    "C:\\WINDOWS\\System32\\RPCRT4.dll",
+    "C:\\WINDOWS\\System32\\PSAPI.DLL",
+    "C:\\WINDOWS\\System32\\ADVAPI32.dll",
+    "C:\\WINDOWS\\System32\\msvcrt.dll",
+    "C:\\WINDOWS\\System32\\sechost.dll",
+    "C:\\WINDOWS\\System32\\USER32.dll",
+    "C:\\WINDOWS\\System32\\win32u.dll",
+    "C:\\WINDOWS\\System32\\GDI32.dll",
+    "C:\\WINDOWS\\System32\\gdi32full.dll",
+    "C:\\WINDOWS\\System32\\msvcp_win.dll",
+    "C:\\WINDOWS\\System32\\ucrtbase.dll",
+    "C:\\WINDOWS\\System32\\CRYPT32.dll",
+    "C:\\WINDOWS\\System32\\bcrypt.dll",
+    "C:\\WINDOWS\\SYSTEM32\\dbghelp.dll",
+    "C:\\WINDOWS\\SYSTEM32\\IPHLPAPI.DLL",
+    "C:\\WINDOWS\\SYSTEM32\\USERENV.dll",
+    "C:\\WINDOWS\\SYSTEM32\\WINMM.dll",
+    "C:\\WINDOWS\\System32\\IMM32.DLL",
+    "C:\\WINDOWS\\SYSTEM32\\powrprof.dll",
+    "C:\\WINDOWS\\SYSTEM32\\UMPDC.dll",
+    "C:\\WINDOWS\\SYSTEM32\\CRYPTBASE.DLL",
+    "C:\\WINDOWS\\system32\\uxtheme.dll",
+    "C:\\WINDOWS\\System32\\combase.dll",
+    "C:\\WINDOWS\\system32\\mswsock.dll",
+    "C:\\WINDOWS\\SYSTEM32\\kernel.appcore.dll",
+    "C:\\WINDOWS\\System32\\bcryptprimitives.dll",
+    "C:\\WINDOWS\\System32\\NSI.dll",
+    "C:\\WINDOWS\\SYSTEM32\\dhcpcsvc6.DLL",
+    "C:\\WINDOWS\\SYSTEM32\\dhcpcsvc.DLL",
+    "C:\\WINDOWS\\SYSTEM32\\DNSAPI.dll",
+    "C:\\Windows\\System32\\rasadhlp.dll",
+    "C:\\WINDOWS\\System32\\fwpuclnt.dll",
+    "C:\\WINDOWS\\system32\\napinsp.dll",
+    "C:\\WINDOWS\\system32\\pnrpnsp.dll",
+    "C:\\WINDOWS\\system32\\wshbth.dll",
+    "C:\\WINDOWS\\system32\\NLAapi.dll",
+    "C:\\WINDOWS\\System32\\winrnr.dll"
+  ]
+}

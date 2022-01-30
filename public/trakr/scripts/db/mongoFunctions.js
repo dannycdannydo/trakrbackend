@@ -35,7 +35,9 @@ let mongoQuery = async function mongoQuery(database, collection, data, freq, sor
             var dbo = db.db(database);
             dbo.collection(collection).find(data).sort(sort).limit(freq).toArray(function(err, result) {
               if (err){
-                  reject()
+                db.close();
+                console.log(err)
+                reject()
               }
               db.close();
               resolve(result)
@@ -54,7 +56,8 @@ let mongoReplace = async function mongoReplace(database, collection, id, update)
 
             dbo.collection(collection).replaceOne({"_id": ObjectId(id)}, update, function(err, result) {
               if (err){
-                  reject()
+                db.close();
+                reject()
               }
               db.close();
               resolve(result)
@@ -72,7 +75,9 @@ let mongoDelete = async function mongoDelete(database, collection, id)
             var dbo = db.db(database);
             dbo.collection(collection).deleteOne({"_id": ObjectId(id)}, function(err, result) {
               if (err){
-                  reject()
+                    db.close();
+                    console.log(err)
+                    reject()
               }
               db.close();
               resolve(result)
@@ -156,23 +161,27 @@ async function lRegQueryMongoliser(data)
 {
     let  mong = {'$and': []}
     for(const [key, value] of Object.entries(data)){
-        if(Array.isArray(value) && value[0]){
-            mong['$and'].push(await brochureArrayMongoliser(key, value))
-        }
-        else if(key == 'Title_Number' && value){
-            mong['$and'].push({'Title Number': `${value}`})
-        }
-        else if(key == 'Company_Registration_No_1' && value){
-            mong['$and'].push({'Company Registration No 1':`${value}`})
-        }
-        else if(key == 'Proprietor_Name_1' && value){
-            mong['$and'].push({'Proprietor Name (1)': new RegExp(value.toUpperCase())})
-        }
+        mong['$and'].push(await lRegQueryArrayMongoliser(key, value))
     }
     if(!mong['$and'][0]){
         mong = ''
     }
     return(mong)
+}
+
+async function lRegQueryArrayMongoliser(key, value)
+{
+    let mongoloid = {'$or': []}
+    if(key == 'Title Number'){
+        mongoloid['$or'].push({'Title Number': `${value}`})
+    }
+    else if(key == 'Company Number'){
+        mongoloid['$or'].push({'Company Registration No 1':`${value}`})
+    }
+    else if(key == 'Company Name'){
+        mongoloid['$or'].push({'Proprietor Name (1)': new RegExp(value.toUpperCase())})
+    }
+    return(mongoloid)
 }
 
 async function brochureArrayMongoliser(key, value)
