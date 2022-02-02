@@ -190,7 +190,7 @@ async function brochureArrayMongoliser(key, value)
 {
     let mongoloid = {'$or': []}
     for(var v in value){
-        if(key == 'sector'){
+        if(key == 'sectors'){
             mongoloid['$or'].push({'sectors': {'$elemMatch': {'sector':`${value[v]}`}}})
         }
         else if(key == 'subsectors'){
