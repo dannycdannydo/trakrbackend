@@ -5,6 +5,7 @@ const { lRegQueryMongoliser, mongoQuery } = require('../../../public/trakr/scrip
 router.post('/trakr/dbFunctions/lregQuery', async function(req, res, next) {
     if(isEmpty(req.body)){
         res.send(null)
+        return
     }
     const query = await lRegQueryMongoliser(req.body)
     const results = await mongoQuery('trakr', 'landreg', query, 10000000, null)

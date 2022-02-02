@@ -172,14 +172,16 @@ async function lRegQueryMongoliser(data)
 async function lRegQueryArrayMongoliser(key, value)
 {
     let mongoloid = {'$or': []}
-    if(key == 'Title Number'){
-        mongoloid['$or'].push({'Title Number': `${value}`})
-    }
-    else if(key == 'Company Number'){
-        mongoloid['$or'].push({'Company Registration No 1':`${value}`})
-    }
-    else if(key == 'Company Name'){
-        mongoloid['$or'].push({'Proprietor Name (1)': new RegExp(value.toUpperCase())})
+    for (var v in value) {
+        if(key == 'Title Number'){
+            mongoloid['$or'].push({'Title Number': `${value[v]}`})
+        }
+        else if(key == 'Company Number'){
+            mongoloid['$or'].push({'Company Registration No 1':`${value[v]}`})
+        }
+        else if(key == 'Company Name'){
+            mongoloid['$or'].push({'Proprietor Name (1)': new RegExp(value[v].toUpperCase())})
+        }
     }
     return(mongoloid)
 }
