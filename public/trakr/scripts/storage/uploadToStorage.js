@@ -50,7 +50,7 @@ let uploadImage = async function upload_Image(filename, file, filetype)
     var blobStream = new stream.Readable();
     blobStream.push(imgBuffer);
     blobStream.push(null);
-    const containerClient = blobServiceClient.getContainerClient('testcontainerpics');
+    const containerClient = blobServiceClient.getContainerClient('trakrpics');
     const blobName = filename + ".jpg";
     const blockBlobClient = containerClient.getBlockBlobClient(blobName);
     await blockBlobClient.upload(imgBuffer, imgBuffer.length);

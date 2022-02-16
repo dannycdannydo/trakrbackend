@@ -152,9 +152,15 @@ async function fullProcessRun(file, uploader)
         .catch(function (err) {
             console.log(err)
         })
+        let database = 'trakr'
+        let collection = 'brochures'
+        if (!uploader.includes('@trakr.it')) {
+            database = 'userUploads'
+            collection = uploader
+            finalForm.meta.userUpload = true
+        }
         if(finalForm.base.portfolio == "0" && finalForm.sectors && finalForm.sectors[0] && finalForm.base.loc && finalForm.base.loc.coordinates && finalForm.base.loc.coordinates[0]){
-            const res = await mongoInsert("trakr", "trakrtest", finalForm)
-            console.log(res)
+            const res = await mongoInsert(database, collection, finalForm)
             if (res === 'Success') {
                 uniqueFiles++
             } else if (res === 'Duplicate') {
@@ -177,7 +183,7 @@ async function fullProcessRun(file, uploader)
                     portfolioForms.push(tempform)
                 }
                 for(var form in portfolioForms){
-                    const res = await mongoInsert("trakr", "trakrtest", portfolioForms[form])
+                    const res = await mongoInsert(database, uploader, portfolioForms[form])
                     if (res === 'Success') {
                         uniqueFiles++
                     } else if (res === 'Duplicate') {
@@ -186,7 +192,7 @@ async function fullProcessRun(file, uploader)
                 }
             }
         }
-        let container = 'testcontainer'
+        let container = 'trakrbrochures'
         if(finalForm.base && finalForm.base.portfolio == '1'){
             if(!finalForm.base.address){
                 container = "failed"
