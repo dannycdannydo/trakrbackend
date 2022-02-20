@@ -1,10 +1,9 @@
 var express = require('express');
 var router = express.Router();
-const { mongoQuery } = require('../../../public/pelotonIntro/scripts/database/mongoFunctions')
+const { mongoQuery, introQueryMongoliser } = require('../../../public/pelotonIntro/scripts/database/mongoFunctions')
 
 router.post('/pelotonIntro/dbFunctions/introSearch', async function(req, res, next) {
-    let query = req.body.query
-    for(const [key, value] of Object.entries(query)) {
+    for(const [key, value] of Object.entries(req.body.query)) {
       if(key.toLowerCase().includes('date')){
         if(typeof value == "object"){
           for(let [key, valueTwo] of Object.entries(value)) {
@@ -13,7 +12,14 @@ router.post('/pelotonIntro/dbFunctions/introSearch', async function(req, res, ne
         }
       }
     }
-    const result = await mongoQuery('peloton', 'intros', req.body.query, req.body.freq, req.body.sort)
+    if (!req.body.freq) {
+      req.body.freq = 100
+    }
+    if (!req.body.sort) {
+      req.body.sort = {"asset.dateSent": -1}
+    }
+    const query = await introQueryMongoliser(req.body.query)
+    const result = await mongoQuery('peloton', 'intros', query, req.body.freq, req.body.sort)
     res.send(result)
   });
 
