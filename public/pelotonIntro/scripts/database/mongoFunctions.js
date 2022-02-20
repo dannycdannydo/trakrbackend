@@ -44,7 +44,7 @@ let mongoUpdate = async function mongoUpdate(database, collection, filter, updat
                 if (err) {console.log(err)
                     throw err};
                 var dbo = db.db(database);
-                await dbo.collection(collection).updateMany(filter, update, async function(err, res) {
+                await dbo.collection(collection).updateMany(filter, { $set: update }, async function(err, res) {
                 if (err){
                     console.log(err)
                     if(err.code = 11000){
