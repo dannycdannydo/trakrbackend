@@ -3,7 +3,6 @@ var router = express.Router();
 const { lRegQueryMongoliser, mongoQuery } = require('../../../public/trakr/scripts/db/mongoFunctions')
 
 router.post('/trakr/dbFunctions/lregQuery', async function(req, res, next) {
-    console.log(req.body)
     if(isEmpty(req.body)){
         res.send(null)
         return

@@ -10,9 +10,6 @@ router.post('/trakr/dbFunctions/deleteAsset', async function(req, res, next) {
     container = req.body.user
     db = 'userUploads'
   }
-  console.log(db)
-  console.log(container)
-  console.log(id)
   const result = mongoDelete(db, container, id)
   res.send(result)
 });
