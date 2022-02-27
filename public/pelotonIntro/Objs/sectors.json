@@ -1,13 +1,14 @@
-{
-    "sectors": [
-        {
-            "name": "Distribution Warehouse"
-        },
-        {
-            "name": "B"
-        },
-        {
-            "name": "C"
-        }
-    ]
-}
+[
+    {
+        "value": "Distribution Warehouse",
+        "text": "Distribution Warehouse"
+    },
+    {
+        "value": "B",
+        "text": "B"
+    },
+    {
+        "value": "C",
+        "text": "C"
+    }
+]

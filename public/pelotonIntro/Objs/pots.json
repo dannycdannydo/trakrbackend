@@ -1,13 +1,14 @@
-{
-    "pots": [
-        {
-            "name": "A"
-        },
-        {
-            "name": "B"
-        },
-        {
-            "name": "C"
-        }
-    ]
-}
+[
+    {
+        "text": "A",
+        "value": "A"
+    },
+    {
+        "text": "B",
+        "value": "B"
+    },
+    {
+        "text": "C",
+        "value": "C"
+    }
+]

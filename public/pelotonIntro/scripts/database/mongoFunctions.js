@@ -83,24 +83,25 @@ let mongoQuery = async function mongoQuery(database, collection, data, freq, sor
     })
 }
 
-// let mongoQuery = async function mongoQuery(database, collection, data, freq, sort)
-// {
-//     return new Promise(async function(resolve, reject)
-//     {
-//         MongoClient.connect(config.trakrDBConnectionString, {useUnifiedTopology: true}, function(err, db) {
-//             if (err) resolve(err);
-//             var dbo = db.db(database);
-//             // get a collection
-//             var coll = dbo.collection(collection);
-//             var standard = mquery().setOptions({ collection: coll, limit: freq, sort: sort})
-//             // pass it to the constructor
-//             standard.find(data, function(err, docs) {
-//                 if(err) console.log(err)
-//                 resolve(docs)
-//             })
-//           })
-//     })
-// }
+let mongoDelete = async function mongoDelete(database, collection, id)
+{
+    return new Promise(async function(resolve, reject)
+    {
+        MongoClient.connect(config.trakrDBConnectionString, {useUnifiedTopology: true}, function(err, db) {
+            if (err) throw err;
+            var dbo = db.db(database);
+            dbo.collection(collection).deleteOne({"_id": ObjectId(id)}, function(err, result) {
+              if (err){
+                    db.close();
+                    console.log(err)
+                    reject()
+              }
+              db.close();
+              resolve(result)
+            });
+        }); 
+    })
+}
 
 async function introQueryMongoliser(data)
 {
@@ -109,21 +110,21 @@ async function introQueryMongoliser(data)
         if(Array.isArray(value) && value[0]){
             mong['$and'].push(await introQueryArrayMongoliser(key, value))
         }
-        // else if(key == 'maxPrice' && value){
-        //     mong['$and'].push({'figures.price': {'$lte': value * 1}})
-        // }
-        // else if(key == 'minPrice' && value){
-        //     mong['$and'].push({'figures.price': {'$gte': value * 1}})
-        // }
-        // else if(key == 'dateCreatedStart' && value){
-        //     mong['$and'].push({'meta.dateCreated': {'$gte': value}})
-        // }
-        // else if(key == 'dateCreatedEnd' && value){
-        //     mong['$and'].push({'meta.dateCreated': {'$lte': value}})
-        // }
-        // else if(key == 'coords' && value){
-        //     mong['$and'].push({'base.loc': {'$geoWithin': {'$centerSphere': [[value.longitude*1, value.latitude*1], value.miles*1/3959]}}})
-        // }
+        else if(key == 'maxPrice' && value){
+            mong['$and'].push({'asset.price': {'$lte': value * 1}})
+        }
+        else if(key == 'minPrice' && value){
+            mong['$and'].push({'asset.price': {'$gte': value * 1}})
+        }
+        else if(key == 'dateSentStart' && value){
+            mong['$and'].push({'asset.dateSent': {'$gte': new Date(value)}})
+        }
+        else if(key == 'dateSentEnd' && value){
+            mong['$and'].push({'asset.dateSent': {'$lte': new Date(value)}})
+        }
+        else if(key == 'coords' && value){
+            mong['$and'].push({'asset.loc': {'$geoWithin': {'$centerSphere': [[value.longitude*1, value.latitude*1], value.miles*1/3959]}}})
+        }
     }
     if(!mong['$and'][0]){
         mong = ''
@@ -138,15 +139,15 @@ async function introQueryArrayMongoliser(key, value)
         if(key == '_id'){
             mongoloid['$or'].push({"_id": ObjectId(value[v])} )
         }
-        // else if(key == 'subsectors'){
-        //     mongoloid['$or'].push({'subsectors': {'$elemMatch': {'subSector':`${value[v]}`}}})
-        // }
-        // else if(key == 'agency'){
-        //     mongoloid['$or'].push({'agencies': {'$elemMatch': {'agency':`${value[v]}`}}})
-        // }
-        // else if(key == 'region'){
-        //     mongoloid['$or'].push({"base.region": `${value[v]}`})
-        // }
+        else if(key == 'agency'){
+            mongoloid['$or'].push({'intros': {'$elemMatch': {'agencies':`${value[v]}`}}})
+        }
+        else if(key == 'sectors'){
+            mongoloid['$or'].push({'intros': {'$elemMatch': {'sectors':`${value[v]}`}}})
+        }
+        else if(key == 'pot'){
+            mongoloid['$or'].push({"asset.pots": `${value[v]}`})
+        }
         // else if(key == 'tenants'){
         //     mongoloid['$or'].push({'tenants': {'$elemMatch': {'tenant': new RegExp(value[v])}}})
         // }
@@ -161,5 +162,6 @@ async function introQueryArrayMongoliser(key, value)
 module.exports.mongoInsert = mongoInsert
 module.exports.mongoQuery = mongoQuery
 module.exports.mongoUpdate = mongoUpdate
+module.exports.mongoDelete = mongoDelete
 module.exports.introQueryMongoliser = introQueryMongoliser
 module.exports.introQueryArrayMongoliser = introQueryArrayMongoliser

@@ -3,6 +3,7 @@ var router = express.Router();
 const { mongoQuery, introQueryMongoliser } = require('../../../public/pelotonIntro/scripts/database/mongoFunctions')
 
 router.post('/pelotonIntro/dbFunctions/introSearch', async function(req, res, next) {
+    console.log(req.body.query)
     for(const [key, value] of Object.entries(req.body.query)) {
       if(key.toLowerCase().includes('date')){
         if(typeof value == "object"){
@@ -20,6 +21,7 @@ router.post('/pelotonIntro/dbFunctions/introSearch', async function(req, res, ne
     }
     const query = await introQueryMongoliser(req.body.query)
     const result = await mongoQuery('peloton', 'intros', query, req.body.freq, req.body.sort)
+    console.log(result)
     res.send(result)
   });
 
