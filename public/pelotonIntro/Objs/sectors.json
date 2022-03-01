@@ -4,11 +4,47 @@
         "text": "Distribution Warehouse"
     },
     {
-        "value": "B",
-        "text": "B"
+        "value": "Multi-Let Industrial",
+        "text": "Multi-Let Industrial"
     },
     {
-        "value": "C",
-        "text": "C"
+        "value": "Trade Counter",
+        "text": "Trade Counter"
+    },
+    {
+        "value": "Manufacturing",
+        "text": "Manufacturing"
+    },
+    {
+        "value": "Land",
+        "text": "Land"
+    },
+    {
+        "value": "Builders Yard",
+        "text": "Builders Yard"
+    },
+    {
+        "value": "Development Potential",
+        "text": "Development Potential"
+    },
+    {
+        "value": "Last Mile Logistics",
+        "text": "Last Mile Logistics"
+    },
+    {
+        "value": "Retail Warehouse",
+        "text": "Retail Warehouse"
+    },
+    {
+        "value": "Offices",
+        "text": "Offices"
+    },
+    {
+        "value": "Business Park",
+        "text": "Business Park"
+    },
+    {
+        "value": "Retail",
+        "text": "Retail"
     }
 ]
