@@ -42,6 +42,7 @@ let uploadImage = async function upload_Image(filename, file, filetype)
             srcFormat: fileFormat,
             format: 'JPEG',
             density: 300,
+            quality: 70
         });
     }
     catch(err){
