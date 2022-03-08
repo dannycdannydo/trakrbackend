@@ -1,13 +1,26 @@
-{
-    "pots": [
-        {
-            "name": "A"
-        },
-        {
-            "name": "B"
-        },
-        {
-            "name": "C"
-        }
-    ]
-}
+[
+    {
+        "text": "BRIT",
+        "value": "BRIT"
+    },
+    {
+        "text": "Moorfield",
+        "value": "Moorfield"
+    },
+    {
+        "text": "BGO",
+        "value": "BGO"
+    },
+    {
+        "text": "Strang",
+        "value": "Strang"
+    },
+    {
+        "text": "Geohn",
+        "value": "Geohn"
+    },
+    {
+        "text": "Privates",
+        "value": "Privates"
+    }
+]

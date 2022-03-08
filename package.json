@@ -26,6 +26,7 @@
     "lodash": "^4.17.21",
     "mailparser": "^3.4.0",
     "memory-streams": "^0.1.3",
+    "mime-types": "^2.1.34",
     "moment": "^2.29.1",
     "mongodb": "^4.1.2",
     "morgan": "~1.9.1",
@@ -36,6 +37,7 @@
     "nodemailer": "^6.7.2",
     "pdf-parse": "^1.1.1",
     "request": "^2.88.2",
+    "sharp": "^0.30.2",
     "stripe": "^8.195.0",
     "winston": "^3.3.3"
   }

@@ -1,5 +1,6 @@
 const { BlobServiceClient } = require("@azure/storage-blob");
-const config= require('../../../../config/config')
+const config = require('../../../../config/config')
+const sharp = require('sharp');
 const blobServiceClient = BlobServiceClient.fromConnectionString(config.azureStorageConnectionString);
 
 const containerName = "trakrpics";
@@ -8,7 +9,8 @@ async function getImage(filename) {
     const blobName = filename + '.jpg';
     const containerClient = blobServiceClient.getContainerClient(containerName);
     const blobClient = containerClient.getBlobClient(blobName);
-    const downloadBlockBlobResponse = await blobClient.downloadToBuffer()
+    let downloadBlockBlobResponse = await blobClient.downloadToBuffer()
+    downloadBlockBlobResponse = await sharp(downloadBlockBlobResponse).resize(200,250).toBuffer()
     return downloadBlockBlobResponse
 }
 

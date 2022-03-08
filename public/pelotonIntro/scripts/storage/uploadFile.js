@@ -1,5 +1,5 @@
 const { BlobServiceClient } = require("@azure/storage-blob");
-const config = require('../../config/config')
+const config = require('../../../../config/config')
 const connStr = config.azureStorageConnectionString
 const blobServiceClient = BlobServiceClient.fromConnectionString(connStr);
 

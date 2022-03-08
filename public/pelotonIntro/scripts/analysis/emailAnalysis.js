@@ -54,7 +54,6 @@ async function analyse(email){
         catch(err){
             console.log(err)
         }
-        console.log(result)
         resolve(result)
     });
 }
