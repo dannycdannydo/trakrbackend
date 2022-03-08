@@ -89,6 +89,7 @@ const stylingProperties = {
 }
 
 async function createExcel (data, template, sheetName, pdf) {
+    console.log(data)
     const workbook = new ExcelJS.Workbook()
     workbook.calcProperties.fullCalcOnLoad = true
     for (const [key, value] of Object.entries(workBookProperties)) {
@@ -100,7 +101,12 @@ async function createExcel (data, template, sheetName, pdf) {
     for (var d in data) {
         const row = getRow(data[d], template)
         worksheet.addRow(row)
-        const image = await getImage(data[d].base.filename)
+        let image = null
+        try {
+            image = await getImage(data[d].base.filename)
+        } catch {
+            image = await getImage('TrakrVertical')
+        }
         const imageId = workbook.addImage({
             buffer: image,
             extension: 'jpg',
