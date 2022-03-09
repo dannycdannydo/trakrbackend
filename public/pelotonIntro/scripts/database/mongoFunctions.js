@@ -103,6 +103,26 @@ let mongoDelete = async function mongoDelete(database, collection, id)
     })
 }
 
+let mongoDeleteGeneral = async function mongoDelete(database, collection, filter)
+{
+    return new Promise(async function(resolve, reject)
+    {
+        MongoClient.connect(config.trakrDBConnectionString, {useUnifiedTopology: true}, function(err, db) {
+            if (err) throw err;
+            var dbo = db.db(database);
+            dbo.collection(collection).deleteOne( filter, function(err, result) {
+              if (err){
+                    db.close();
+                    console.log(err)
+                    reject()
+              }
+              db.close();
+              resolve(result)
+            });
+        }); 
+    })
+}
+
 async function introQueryMongoliser(data)
 {
     let  mong = {'$and': []}
@@ -163,5 +183,6 @@ module.exports.mongoInsert = mongoInsert
 module.exports.mongoQuery = mongoQuery
 module.exports.mongoUpdate = mongoUpdate
 module.exports.mongoDelete = mongoDelete
+module.exports.mongoDeleteGeneral = mongoDeleteGeneral
 module.exports.introQueryMongoliser = introQueryMongoliser
 module.exports.introQueryArrayMongoliser = introQueryArrayMongoliser
