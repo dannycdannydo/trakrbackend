@@ -32,9 +32,7 @@ module.exports = () => express()
 const config = require('./config/config')
 
 chargebee.configure({
-  site : config.chargebeeSiteTest, 
-  api_key : config.chargeBeeApiKeyTest,
-  // site : config.chargebeeSite, 
-  // api_key : config.chargeBeeApiKey,
+  site : config.chargebeeSite, 
+  api_key : config.chargeBeeApiKey,
 });
 
