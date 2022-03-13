@@ -6,6 +6,7 @@ let updateMetaData = async function updateMetaData(objName, data, userId)
   return new Promise(async function(resolve, reject)
   {
     let token = await getToken()
+    console.log(token)
     token = JSON.parse(token)
     var options = {
         method: 'PATCH',

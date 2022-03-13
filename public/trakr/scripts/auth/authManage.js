@@ -17,6 +17,7 @@ let getToken = async function getToken()
             }
           };
           request(options, async function (error, response, body) {
+            console.log(body)
             resolve(body)
           });
     })
