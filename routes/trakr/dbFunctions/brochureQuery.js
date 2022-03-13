@@ -20,7 +20,7 @@ router.post('/trakr/dbFunctions/brochureQuery', async function(req, res, next) {
         'meta.dateCreated': -1
     };
     if(req.body.freq){
-        freq = data.freq
+        freq = req.body.freq
     }
     const mongolisedQuery = await brochureQueryMongoliser(data)
     let result = {}

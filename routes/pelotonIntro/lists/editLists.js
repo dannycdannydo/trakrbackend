@@ -7,8 +7,6 @@ router.post('/pelotonIntro/lists/editLists', async function(req, res, next) {
     for (const [key, value] of Object.entries(req.body.add)) {
       if (value[0]) {
         for(var i in value) {
-          console.log(key)
-          console.log({value: value[i], text: value[i]})
           await mongoInsert('peloton', key, {value: value[i], text: value[i]})
         }
       }

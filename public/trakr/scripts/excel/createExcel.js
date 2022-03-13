@@ -89,7 +89,6 @@ const stylingProperties = {
 }
 
 async function createExcel (data, template, sheetName, pdf) {
-    console.log(data)
     const workbook = new ExcelJS.Workbook()
     workbook.calcProperties.fullCalcOnLoad = true
     for (const [key, value] of Object.entries(workBookProperties)) {
