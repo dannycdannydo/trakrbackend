@@ -35,13 +35,13 @@ const finalForm = {
     tenants: [],
 }
 
-async function fullProcess(file, uploader)
+async function fullProcess(file, uploader, orgs)
 {
     return new Promise (async function(resolve, reject)
     {
         let result = null
         try{
-            result = await fullProcessRun(file, uploader)
+            result = await fullProcessRun(file, uploader, orgs)
         } catch (err) {
             if (!file.originalname) {
                 file.originalname = moment()
@@ -53,7 +53,7 @@ async function fullProcess(file, uploader)
     })
 }
 
-async function fullProcessRun(file, uploader)
+async function fullProcessRun(file, uploader, orgs)
 {
     return new Promise (async function(resolve, reject)
     {
@@ -159,38 +159,17 @@ async function fullProcessRun(file, uploader)
             collection = uploader
             finalForm.meta.userUpload = true
         }
-        if(finalForm.base.portfolio == "0" && finalForm.sectors && finalForm.sectors[0] && finalForm.base.loc && finalForm.base.loc.coordinates && finalForm.base.loc.coordinates[0]){
-            const res = await mongoInsert(database, collection, finalForm)
-            if (res === 'Success') {
-                uniqueFiles++
-            } else if (res === 'Duplicate') {
-                dupeFiles++
+        let fileCount = await insertToDatabase(finalForm, database, collection, uniqueFiles, dupeFiles)
+        uniqueFiles = fileCount.uniqueFiles
+        dupeFiles = fileCount.dupeFiles
+        if (orgs[0]) {
+            for (var o in orgs) {
+                database = 'orgUploads'
+                collection = orgs[o]
+                finalForm.meta.userUpload = true
+                insertToDatabase(finalForm, database, collection, uniqueFiles, dupeFiles)
             }
-        }
-        else if (finalForm.base.portfolio == "1"){
-            let portfolioForms = []
-            let count = 0
-            if (finalForm.base.address) {
-                for(var a in finalForm.base.address){
-                    let tempform = _.cloneDeep(finalForm)
-                    tempform.base.town = finalForm.base.address[a].town
-                    tempform.base.region = finalForm.base.address[a].region
-                    tempform.base.postcode = finalForm.base.address[a].postcode
-                    tempform.base.loc = { type: "Point", coordinates: [finalForm.base.address[a].longitude, finalForm.base.address[a].latitude] }
-                    tempform.base.filename = finalForm.base.filename + "portcount" + count
-                    delete tempform.base.address
-                    count++
-                    portfolioForms.push(tempform)
-                }
-                for(var form in portfolioForms){
-                    const res = await mongoInsert(database, uploader, portfolioForms[form])
-                    if (res === 'Success') {
-                        uniqueFiles++
-                    } else if (res === 'Duplicate') {
-                        dupeFiles++
-                    }
-                }
-            }
+            
         }
         let container = 'trakrbrochures'
         if(finalForm.base && finalForm.base.portfolio == '1'){
@@ -206,6 +185,43 @@ async function fullProcessRun(file, uploader)
         await uploadFile(file.buffer, finalForm.base.filename, container, file.originalname, finalForm.meta.filetype)
         resolve( { succeeded:uniqueFiles, dupes: dupeFiles, fails: fails })
     })
+}
+
+async function insertToDatabase (finalForm, database, collection, uniqueFiles, dupeFiles) {
+    if(finalForm.base.portfolio == "0" && finalForm.sectors && finalForm.sectors[0] && finalForm.base.loc && finalForm.base.loc.coordinates && finalForm.base.loc.coordinates[0]){
+        const res = await mongoInsert(database, collection, finalForm)
+        if (res === 'Success') {
+            uniqueFiles++
+        } else if (res === 'Duplicate') {
+            dupeFiles++
+        }
+    }
+    else if (finalForm.base.portfolio == "1"){
+        let portfolioForms = []
+        let count = 0
+        if (finalForm.base.address) {
+            for(var a in finalForm.base.address){
+                let tempform = _.cloneDeep(finalForm)
+                tempform.base.town = finalForm.base.address[a].town
+                tempform.base.region = finalForm.base.address[a].region
+                tempform.base.postcode = finalForm.base.address[a].postcode
+                tempform.base.loc = { type: "Point", coordinates: [finalForm.base.address[a].longitude, finalForm.base.address[a].latitude] }
+                tempform.base.filename = finalForm.base.filename + "portcount" + count
+                delete tempform.base.address
+                count++
+                portfolioForms.push(tempform)
+            }
+            for(var form in portfolioForms){
+                const res = await mongoInsert(database, uploader, portfolioForms[form])
+                if (res === 'Success') {
+                    uniqueFiles++
+                } else if (res === 'Duplicate') {
+                    dupeFiles++
+                }
+            }
+        }
+    }
+    return {uniqueFiles: uniqueFiles, dupeFiles: dupeFiles}
 }
 
 

@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 const { brochureQueryMongoliser, mongoQuery, mongoSums } = require('../../../public/trakr/scripts/db/mongoFunctions')
 const _ = require('lodash')
+const { getOrganisations } = require('../../../public/trakr/scripts/auth/getOrganisations')
 
 router.post('/trakr/dbFunctions/brochureQuery', async function(req, res, next) {
     const exclude = []
@@ -27,7 +28,16 @@ router.post('/trakr/dbFunctions/brochureQuery', async function(req, res, next) {
     let trakrAssets = await mongoQuery('trakr', 'brochures', mongolisedQuery, freq, sort)
     if (req.body.user && !req.body.user.includes('@trakr.it')) {
         let userAssets = await mongoQuery('userUploads', req.body.user, mongolisedQuery, freq, sort)
-        const mergedArray = [...userAssets, ...trakrAssets];
+        let orgAssets = []
+        if (req.body.userId) {
+            const orgs = await getOrganisations(req.body.userId)
+            if (orgs[0]) {
+                for (var o in orgs) {
+                    orgAssets = [...(await mongoQuery('orgUploads', orgs[o], mongolisedQuery, freq, sort))]
+                }
+            }
+        }
+        const mergedArray = [ ...orgAssets, ...userAssets, ...trakrAssets];
         // mergedArray have duplicates, lets remove the duplicates using Set
         let set = new Set();
         result.assets = mergedArray.filter(item => {
