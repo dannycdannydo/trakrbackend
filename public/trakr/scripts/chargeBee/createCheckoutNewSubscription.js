@@ -14,7 +14,7 @@ let createCheckoutNewSubscription = async function createCheckoutNewSubscription
       customerObject.id = tempId.customer.id
     }
     chargebee.hosted_page.checkout_new_for_items({
-      redirect_url: 'http://localhost:8080',
+      redirect_url: 'https://www.trakr.it/brochure-bank',
       subscription_items : [
         {
           item_price_id : data.plan,
