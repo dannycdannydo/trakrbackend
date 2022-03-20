@@ -66,14 +66,33 @@ let mongoReplace = async function mongoReplace(database, collection, id, update)
     })
 }
 
-let mongoDelete = async function mongoDelete(database, collection, id)
+let mongoCount = async function mongoCount(database, collection, query)
+{
+    return new Promise(async function(resolve, reject)
+    {
+        MongoClient.connect(uri, {useUnifiedTopology: true}, function(err, db) {
+            if (err) throw err;
+            var dbo = db.db(database)
+            dbo.collection(collection).count(query, function(err, result) {
+              if (err){
+                db.close();
+                reject()
+              }
+              db.close();
+              resolve(result)
+            });
+        }); 
+    })
+}
+
+let mongoDelete = async function mongoDelete(database, collection, filter)
 {
     return new Promise(async function(resolve, reject)
     {
         MongoClient.connect(uri, {useUnifiedTopology: true}, function(err, db) {
             if (err) throw err;
             var dbo = db.db(database);
-            dbo.collection(collection).deleteOne({"_id": ObjectId(id)}, function(err, result) {
+            dbo.collection(collection).deleteOne(filter, function(err, result) {
               if (err){
                     db.close();
                     console.log(err)
@@ -220,3 +239,4 @@ module.exports.lRegQueryMongoliser = lRegQueryMongoliser
 module.exports.mongoSums = mongoSums
 module.exports.mongoReplace = mongoReplace
 module.exports.mongoDelete = mongoDelete
+module.exports.mongoCount = mongoCount
