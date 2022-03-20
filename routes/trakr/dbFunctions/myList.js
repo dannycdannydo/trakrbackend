@@ -33,7 +33,6 @@ router.post('/trakr/dbFunctions/getMyList', async function(req, res, next) {
 router.post('/trakr/dbFunctions/countMyList', async function(req, res, next) {
     if (req.body.user) {
         const result = await mongoCount('userLists', req.body.user, {})
-        console.log(result)
         res.send({value: result})
     } else {
         res.send({value: 0})
