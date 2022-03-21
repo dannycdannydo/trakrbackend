@@ -166,10 +166,9 @@ async function fullProcessRun(file, uploader, orgs)
             for (var o in orgs) {
                 database = 'orgUploads'
                 collection = orgs[o]
-                finalForm.meta.userUpload = true
+                finalForm.meta.orgUpload = true
                 insertToDatabase(finalForm, database, collection, uniqueFiles, dupeFiles)
             }
-            
         }
         let container = 'trakrbrochures'
         if(finalForm.base && finalForm.base.portfolio == '1'){
