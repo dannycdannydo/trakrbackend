@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const { mongoInsert, mongoQuery, mongoDelete, mongoCount } = require('../../../public/trakr/scripts/db/mongoFunctions')
+const { mongoInsert, mongoQuery, mongoDelete, mongoDeleteMany, mongoCount } = require('../../../public/trakr/scripts/db/mongoFunctions')
 
 router.post('/trakr/dbFunctions/addToMyList', async function(req, res, next) {
     const result = await mongoInsert('userLists', req.body.user, req.body.asset)
@@ -22,6 +22,11 @@ router.post('/trakr/dbFunctions/checkMyList', async function(req, res, next) {
 
 router.post('/trakr/dbFunctions/removeFromMyList', async function(req, res, next) {
     const result = await mongoDelete('userLists', req.body.user, {'base.filename': req.body.asset.base.filename})
+    res.send(result)
+});
+
+router.post('/trakr/dbFunctions/clearMyList', async function(req, res, next) {
+    const result = await mongoDeleteMany('userLists', req.body.user, {})
     res.send(result)
 });
 

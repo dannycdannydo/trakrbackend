@@ -105,6 +105,25 @@ let mongoDelete = async function mongoDelete(database, collection, filter)
     })
 }
 
+let mongoDeleteMany = async function mongoDeleteMany(database, collection, filter)
+{
+    return new Promise(async function(resolve, reject)
+    {
+        MongoClient.connect(uri, {useUnifiedTopology: true}, function(err, db) {
+            if (err) throw err;
+            var dbo = db.db(database);
+            dbo.collection(collection).deleteMany(filter, function(err, result) {
+              if (err){
+                    db.close();
+                    console.log(err)
+                    reject()
+              }
+              db.close();
+              resolve(result)
+            });
+        }); 
+    })
+}
 
 let mongoSums = async function mongoSums(data)
 {
@@ -239,4 +258,5 @@ module.exports.lRegQueryMongoliser = lRegQueryMongoliser
 module.exports.mongoSums = mongoSums
 module.exports.mongoReplace = mongoReplace
 module.exports.mongoDelete = mongoDelete
+module.exports.mongoDeleteMany = mongoDeleteMany
 module.exports.mongoCount = mongoCount
