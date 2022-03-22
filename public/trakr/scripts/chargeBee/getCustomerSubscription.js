@@ -4,6 +4,7 @@ let getCustomerSubscription = async function getCustomerSubscription(data)
 {
   return new Promise(async function(resolve, reject)
   {
+    console.log(data)
     if(!data.id){
       resolve({subscription: {status: false}})
     }
