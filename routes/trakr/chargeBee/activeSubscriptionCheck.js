@@ -4,6 +4,7 @@ const { getCustomerSubscription } = require('../../../public/trakr/scripts/charg
 const { getCustomerFromEmail } = require('../../../public/trakr/scripts/chargeBee/getCustomerFromEmail')
 
 router.post('/trakr/chargeBee/activeSubscriptionCheck', async function(req, res, next) {
+  console.log(req.body)
   try {
     if (req.body.email && !req.body.id) {
       const customer = await getCustomerFromEmail(req.body)
