@@ -5,14 +5,14 @@ const { getCustomerFromEmail } = require('../../../public/trakr/scripts/chargeBe
 
 router.post('/trakr/chargeBee/activeSubscriptionCheck', async function(req, res, next) {
   try {
-    if (req.body.email && !req.body.id) {
-      const customer = await getCustomerFromEmail(req.body)
-      req.body.id = customer.customer.id
+    if (req.body.email) {
+      const customer = await getCustomerFromEmail(req.body.email)
+      const id = customer.customer.id
+      const customerSubscription = await getCustomerSubscription({ id: id })
+      res.send(customerSubscription)
     }
-    const customerSubscription = await getCustomerSubscription({ id: req.body.id })
-    res.send(customerSubscription)
   } catch {
-    res.send('failed')
+    res.send({ subscription: { status: 'inactive' } })
   }
 });
 
