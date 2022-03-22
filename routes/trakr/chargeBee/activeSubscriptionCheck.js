@@ -11,6 +11,7 @@ router.post('/trakr/chargeBee/activeSubscriptionCheck', async function(req, res,
       req.body.id = customer.customer.id
     }
     const customerSubscription = await getCustomerSubscription({ id: req.body.id })
+    console.log(customerSubscription)
     res.send(customerSubscription)
   } catch {
     res.send('failed')
