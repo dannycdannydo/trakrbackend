@@ -6,9 +6,10 @@ const { getCustomerFromEmail } = require('../../../public/trakr/scripts/chargeBe
 router.post('/trakr/chargeBee/activeSubscriptionCheck', async function(req, res, next) {
   try {
     if (req.body.email) {
-      const customer = await getCustomerFromEmail(req.body.email)
+      const customer = await getCustomerFromEmail(req.body)
       const id = customer.customer.id
       const customerSubscription = await getCustomerSubscription({ id: id })
+      console.log(customerSubscription)
       res.send(customerSubscription)
     }
   } catch {
