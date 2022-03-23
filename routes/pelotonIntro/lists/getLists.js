@@ -4,6 +4,11 @@ const { mongoQuery } = require('../../../public/pelotonIntro/scripts/database/mo
 
 router.post('/pelotonIntro/lists/getLists', async function(req, res, next) {
   const list = await mongoQuery('peloton', req.body.list, '', 10000000)
+  list.sort(function(a, b) {
+    var textA = a.text.toUpperCase();
+    var textB = b.text.toUpperCase();
+    return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+  });
   res.send(list)
 })
 
