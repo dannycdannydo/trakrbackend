@@ -4,7 +4,6 @@ const { mongoQuery } = require('../../../public/pelotonIntro/scripts/database/mo
 
 router.post('/pelotonIntro/lists/getLists', async function(req, res, next) {
   const list = await mongoQuery('peloton', req.body.list, '', 10000000)
-  console.log(list)
   list.sort(function(a, b) {
     var textA = a.text.toUpperCase();
     var textB = b.text.toUpperCase();
