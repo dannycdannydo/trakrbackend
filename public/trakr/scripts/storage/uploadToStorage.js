@@ -48,13 +48,18 @@ let uploadImage = async function upload_Image(filename, file, filetype)
     catch(err){
         console.log(err)
     }
-    var blobStream = new stream.Readable();
-    blobStream.push(imgBuffer);
-    blobStream.push(null);
-    const containerClient = blobServiceClient.getContainerClient('trakrpics');
-    const blobName = filename + ".jpg";
-    const blockBlobClient = containerClient.getBlockBlobClient(blobName);
-    await blockBlobClient.upload(imgBuffer, imgBuffer.length);
+    try {
+        var blobStream = new stream.Readable();
+        blobStream.push(imgBuffer);
+        blobStream.push(null);
+        const containerClient = blobServiceClient.getContainerClient('trakrpics');
+        const blobName = filename + ".jpg";
+        const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+        await blockBlobClient.upload(imgBuffer, imgBuffer.length);
+    }
+    catch(err){
+        console.log(err)
+    }
 }
 
 let getFirstPage = async function getFirstPage(buffer){
