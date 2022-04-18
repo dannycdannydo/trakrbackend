@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const { mongoQuery, introQueryMongoliser } = require('../../../public/pelotonIntro/scripts/database/mongoFunctions')
+const { introSums } = require('../../../public/pelotonIntro/scripts/sums/introSums')
 
 router.post('/pelotonIntro/dbFunctions/introSearch', async function(req, res, next) {
     for(const [key, value] of Object.entries(req.body.query)) {
@@ -20,7 +21,8 @@ router.post('/pelotonIntro/dbFunctions/introSearch', async function(req, res, ne
     }
     const query = await introQueryMongoliser(req.body.query)
     const result = await mongoQuery('peloton', 'intros', query, req.body.freq, req.body.sort)
-    res.send(result)
+    const sums = await introSums(result)
+    res.send({data: result, sums: sums})
   });
 
 
