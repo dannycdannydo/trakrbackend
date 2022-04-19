@@ -38,8 +38,11 @@ async function pipe(data){
             data.attachments.push({name: mail.attachments[a].filename, filename: data.filename + a, extension: fileExtension})
             uploadFile.uploadFile(mail.attachments[a].content, data.filename + a, 'peloton', "." + fileExtension)
             if (fileExtension.includes("pdf")) {
-                const img = await pdfToJpg.pdfToJpg(mail.attachments[a].content, data.filename + a)
-                uploadFile.uploadFile(img, data.filename + a, 'peloton', ".jpg")
+                try{
+                    const img = await pdfToJpg.pdfToJpg(mail.attachments[a].content, data.filename + a)
+                    uploadFile.uploadFile(img, data.filename + a, 'peloton', ".jpg")
+                } catch {
+                }
             }
         }
     }

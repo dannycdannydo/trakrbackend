@@ -13,7 +13,7 @@ let pdfToJpg = async function pdfToJpg(pdfBuffer, filename)
             resolve(imageBuffer)
         }
         catch {
-            reject()
+            resolve('')
         }
     })
 }
@@ -22,7 +22,8 @@ let getFirstPage = async function getFirstPage(buffer)
 {
     return new Promise(async function(resolve, reject)
     {
-        //Creating a stream, so hummus pushes the result to it
+        try{
+            //Creating a stream, so hummus pushes the result to it
         let outStream = new streams.WritableStream();
         //Using PDFStreamForResponse to be able to pass a writable stream
         let pdfWriter = hummus.createWriter(new hummus.PDFStreamForResponse(outStream));
@@ -43,6 +44,9 @@ let getFirstPage = async function getFirstPage(buffer)
         //As we used 'memory-stream' and our stream is ended
         //we can just grab stream's content and return it
         resolve(outStream.toBuffer()) 
+        } catch {
+            resolve()
+        }
     })
 }
 
