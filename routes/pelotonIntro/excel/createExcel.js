@@ -7,7 +7,6 @@ router.post('/pelotonIntro/excel/createExcel', async function(req, res, next) {
     try {
         req.body.data = await listToIntros(req.body.data)
         const buffer = await createExcel(req.body.data, req.body.template, req.body.sheetname)
-        console.log(buffer)
         res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         res.setHeader("Content-Disposition", `attachment; filename=${req.body.filename}.xlsx`);
         res.send(buffer.toString('base64'))

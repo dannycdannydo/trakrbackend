@@ -68,7 +68,6 @@ router.post('/pelotonIntro/dbFunctions/clearMyList', async function(req, res, ne
 });
 
 router.post('/pelotonIntro/dbFunctions/getMyList', async function(req, res, next) {
-    console.log(req.body)
     if (req.body.user) {
         try {
             const result = await mongoQuery('pelotonUserLists', req.body.user, {}, 100000000, {'dateSent': -1})

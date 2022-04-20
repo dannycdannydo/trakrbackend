@@ -145,7 +145,6 @@ async function totalRow (data, template) {
 }
 
 function getRow (data, template, totalRow, totals) {
-    console.log(data.asset)
     const row = {}
     if (template === 'MyList') {
         try {
