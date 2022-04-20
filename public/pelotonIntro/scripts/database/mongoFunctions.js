@@ -32,6 +32,25 @@ let mongoInsert = async function mongoInsert(database, collection, data)
     })
 }
 
+let mongoCount = async function mongoCount(database, collection, query)
+{
+    return new Promise(async function(resolve, reject)
+    {
+        MongoClient.connect(config.trakrDBConnectionString, {useUnifiedTopology: true}, function(err, db) {
+            if (err) throw err;
+            var dbo = db.db(database)
+            dbo.collection(collection).count(query, function(err, result) {
+              if (err){
+                db.close();
+                reject()
+              }
+              db.close();
+              resolve(result)
+            });
+        }); 
+    })
+}
+
 let mongoUpdate = async function mongoUpdate(database, collection, filter, update)
 {
     return new Promise(async function(resolve, reject)
@@ -83,14 +102,34 @@ let mongoQuery = async function mongoQuery(database, collection, data, freq, sor
     })
 }
 
-let mongoDelete = async function mongoDelete(database, collection, id)
+let mongoDelete = async function mongoDelete(database, collection, filter)
 {
     return new Promise(async function(resolve, reject)
     {
         MongoClient.connect(config.trakrDBConnectionString, {useUnifiedTopology: true}, function(err, db) {
             if (err) throw err;
             var dbo = db.db(database);
-            dbo.collection(collection).deleteOne({"_id": ObjectId(id)}, function(err, result) {
+            dbo.collection(collection).deleteOne(filter, function(err, result) {
+              if (err){
+                    db.close();
+                    console.log(err)
+                    reject()
+              }
+              db.close();
+              resolve(result)
+            });
+        }); 
+    })
+}
+
+let mongoDeleteMany = async function mongoDeleteMany(database, collection, filter)
+{
+    return new Promise(async function(resolve, reject)
+    {
+        MongoClient.connect(config.trakrDBConnectionString, {useUnifiedTopology: true}, function(err, db) {
+            if (err) throw err;
+            var dbo = db.db(database);
+            dbo.collection(collection).deleteMany(filter, function(err, result) {
               if (err){
                     db.close();
                     console.log(err)
@@ -183,6 +222,8 @@ module.exports.mongoInsert = mongoInsert
 module.exports.mongoQuery = mongoQuery
 module.exports.mongoUpdate = mongoUpdate
 module.exports.mongoDelete = mongoDelete
+module.exports.mongoDeleteMany = mongoDeleteMany
 module.exports.mongoDeleteGeneral = mongoDeleteGeneral
 module.exports.introQueryMongoliser = introQueryMongoliser
 module.exports.introQueryArrayMongoliser = introQueryArrayMongoliser
+module.exports.mongoCount = mongoCount
