@@ -82,6 +82,37 @@ let mongoUpdate = async function mongoUpdate(database, collection, filter, updat
     })
 }
 
+let mongoUpdatePush = async function mongoUpdatePush(database, collection, filter, update)
+{
+    return new Promise(async function(resolve, reject)
+    {
+        try {
+            if(filter._id){
+                filter._id = new ObjectId(filter._id)
+            }
+            MongoClient.connect(config.trakrDBConnectionString, { useNewUrlParser: true, useUnifiedTopology: true}, async function(err, db) {
+                if (err) {console.log(err)
+                    throw err};
+                var dbo = db.db(database);
+                await dbo.collection(collection).updateMany(filter, { $push: update }, async function(err, res) {
+                if (err){
+                    console.log(err)
+                    if(err.code = 11000){
+                        resolve("Duplicate")
+                    }
+                }
+                console.log("1 document updated");
+                db.close();
+                resolve('Success')
+                });
+            });
+        }
+        catch {
+            reject()
+        }
+    })
+}
+
 let mongoQuery = async function mongoQuery(database, collection, data, freq, sort)
 {
     return new Promise(async function(resolve, reject)
@@ -221,6 +252,7 @@ async function introQueryArrayMongoliser(key, value)
 module.exports.mongoInsert = mongoInsert
 module.exports.mongoQuery = mongoQuery
 module.exports.mongoUpdate = mongoUpdate
+module.exports.mongoUpdatePush = mongoUpdatePush
 module.exports.mongoDelete = mongoDelete
 module.exports.mongoDeleteMany = mongoDeleteMany
 module.exports.mongoDeleteGeneral = mongoDeleteGeneral

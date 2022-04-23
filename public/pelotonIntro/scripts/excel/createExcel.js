@@ -169,18 +169,28 @@ function getRow (data, template, totalRow, totals) {
         //     row.date = '-'
         // }
         try {
-            if (data.intros[0] && data.intros[0].agents[0]) {
-                row.agent = data.intros[0].agents[0]
-            } else {
+            let blank = true
+            for (var a in data.intros) {
+                if (data.intros[a].selected && data.intros[a].agents[0]) {
+                    row.agent = data.intros[a].agents[0]
+                    blank = false
+                }
+            }
+            if (blank) {
                 row.agent = '-'
             }
         } catch {
             row.agent = '-'
         }
         try {
-            if (data.intros[0] && data.intros[0].agencies[0]) {
-                row.agency = data.intros[0].agencies[0]
-            } else {
+            let blank = true
+            for (var a in data.intros) {
+                if (data.intros[a].selected && data.intros[a].agencies[0]) {
+                    row.agency = data.intros[a].agencies[0]
+                    blank = false
+                }
+            }
+            if (blank) {
                 row.agency = '-'
             }
         } catch {
