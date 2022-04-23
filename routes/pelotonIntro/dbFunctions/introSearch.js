@@ -22,9 +22,9 @@ router.post('/pelotonIntro/dbFunctions/introSearch', async function(req, res, ne
     const query = await introQueryMongoliser(req.body.query)
     const result = await mongoQuery('peloton', 'intros', query, req.body.freq, req.body.sort)
     const sums = await introSums(result)
-    if (req.body.sumsOnly) {
+    if (req.body.searchType && req.body.searchType.sumsOnly) {
       res.send({ sums: sums })
-    } else if (req.body.basic) {
+    } else if (req.body.searchType && req.body.searchType.basic) {
       for (var r in result) {
         for (var i in result[r].intros) {
           result[r].intros[i] = { itemId: result[r].intros[i].itemId }
