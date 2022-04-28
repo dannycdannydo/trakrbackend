@@ -11,20 +11,21 @@ async function pipe(data){
     const mail = await getMail.getMail(data.restURL, data.itemId, data.token)
     let tempAdd = {}
     let asset = {}
-    if(data.address){
-        tempAdd = await geocode.geocode(data.address)
+    data.coords = []
+    if(data.address && data.address[0]){
+        tempAdd = await geocode.geocode(data.address[0])
         if(tempAdd.status && tempAdd.status == "invalid"){
             return({result: 'fail', message: "Address not recognised, try again"})
         }
         else if(tempAdd.address.full) {
-            data.address = tempAdd.address.full
+            data.address[0] = tempAdd.address.full
         }
     }
     else {
         return({result: 'fail', message: "Address not recognised, try again"})
     }
     if(tempAdd.latitude){
-        data.loc = { type: "Point", coordinates: [tempAdd.longitude, tempAdd.latitude] }
+        data.coords.push( { loc: { type: "Point", coordinates: [tempAdd.longitude, tempAdd.latitude] }} )
     }
     else {
         return({result: 'fail', message: "Address not recognised, try again"})
@@ -50,12 +51,13 @@ async function pipe(data){
     }
     data.recipient = mail.to.value
     data.html = mail.html
-    const keys = ['address', 'dateSent', 'loc', 'attachments', 'pots', 'price', 'rent', 'yield', 'sectors']
+    const keys = ['address', 'dateSent', 'coords', 'attachments', 'pots', 'price', 'rent', 'yield', 'sectors']
     for(var k in keys){
         if(data[keys[k]]){
             asset[keys[k]] = data[keys[k]]
         }
     }
+    console.log(data)
     delete data.token
     delete data.restURL
     //query DB to see if assets within +-30 days and 100m radius have been uploaded recently. Assume same asset if so.

@@ -213,7 +213,7 @@ async function introQueryMongoliser(data)
             mong['$and'].push({'asset.dateSent': {'$lte': new Date(value)}})
         }
         else if(key == 'coords' && value){
-            mong['$and'].push({'asset.loc': {'$geoWithin': {'$centerSphere': [[value.longitude*1, value.latitude*1], value.miles*1/3959]}}})
+            mong['$and'].push({'asset.coords.loc': {'$geoWithin': {'$centerSphere': [[value.longitude*1, value.latitude*1], value.miles*1/3959]}}})
         }
     }
     if(!mong['$and'][0]){

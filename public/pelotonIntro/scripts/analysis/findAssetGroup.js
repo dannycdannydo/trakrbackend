@@ -16,7 +16,7 @@ async function findAssetGroup(asset){
                 {
                     '$geoWithin': 
                         {
-                            '$centerSphere': [asset.loc.coordinates, milesToRadian(0.062)]
+                            '$centerSphere': [asset.coords[0].loc.coordinates, milesToRadian(0.062)]
                         }
                 }
         }
