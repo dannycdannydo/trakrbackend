@@ -40,7 +40,9 @@ async function pipe(data){
             if (fileExtension.includes("pdf")) {
                 try{
                     const img = await pdfToJpg.pdfToJpg(mail.attachments[a].content, data.filename + a)
-                    uploadFile.uploadFile(img, data.filename + a, 'peloton', ".jpg")
+                    if (img) {
+                        uploadFile.uploadFile(img, data.filename + a, 'peloton', ".jpg")
+                    }
                 } catch {
                 }
             }
@@ -58,7 +60,6 @@ async function pipe(data){
     delete data.restURL
     //query DB to see if assets within +-30 days and 100m radius have been uploaded recently. Assume same asset if so.
     const groupCheck = await findAssetGroup.findAssetGroup(data)
-    console.log(groupCheck)
     // There is already this asset in DB, so just update the intro key for that asset.
     if(groupCheck[0]){
         const result = await mongoFunctions.mongoUpdatePush('peloton', 'intros', {"_id" : groupCheck[1]._id.toString()}, { "intros": data } )

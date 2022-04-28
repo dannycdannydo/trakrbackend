@@ -2,6 +2,7 @@ const hummus = require('hummus');
 const streams = require('memory-streams');
 const PDFRStreamForBuffer = require('./pdfr-stream-for-buffer.js');
 const magick = require('imagemagick-convert');
+const { first } = require('lodash');
 
 let pdfToJpg = async function pdfToJpg(pdfBuffer, filename)
 {
@@ -44,7 +45,8 @@ let getFirstPage = async function getFirstPage(buffer)
         //As we used 'memory-stream' and our stream is ended
         //we can just grab stream's content and return it
         resolve(outStream.toBuffer()) 
-        } catch {
+        } catch (e) {
+            console.log(e)
             resolve()
         }
     })
