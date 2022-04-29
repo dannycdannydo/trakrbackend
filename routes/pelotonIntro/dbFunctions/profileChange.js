@@ -23,7 +23,7 @@ router.post('/pelotonIntro/dbFunctions/profileChange', async function(req, res, 
         }
     }
     for(var r in result) {
-        mongoInsert('testing', 'pelly', result[r])
+        mongoInsert('peloton', 'intros', result[r])
     }
   });
 

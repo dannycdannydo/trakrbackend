@@ -31,7 +31,7 @@ router.post('/pelotonIntro/dbFunctions/editIntro', async function(req, res, next
       }
     }
   }
-  const result = await mongoUpdate('testing', 'pelly', req.body.filter, query)
+  const result = await mongoUpdate('peloton', 'intros', req.body.filter, query)
   res.send(result)
 });
 
@@ -56,7 +56,7 @@ router.post('/pelotonIntro/dbFunctions/editIntroFile', upload.single('file'), as
       }
     }
   }
-  const result = await mongoUpdate('testing', 'pelly', req.body.filter, query)
+  const result = await mongoUpdate('peloton', 'intros', req.body.filter, query)
   uploadFile(file.buffer, req.body.fileName, 'peloton', "." + mime.extension(file.mimetype))
   if (mime.extension(file.mimetype).includes("pdf")) {
       const img = await pdfToJpg(file.buffer, req.body.fileName)

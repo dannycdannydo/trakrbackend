@@ -23,7 +23,7 @@ async function listToIntros (list) {
                 ids._id.push(list[l].id)
             }
             const query = await introQueryMongoliser(ids)
-            const results = await mongoQuery('testing', 'pelly', query, 100000000, {'asset.dateSent': -1}  )
+            const results = await mongoQuery('peloton', 'intros', query, 100000000, {'asset.dateSent': -1}  )
             return results
         } catch {
             return false
