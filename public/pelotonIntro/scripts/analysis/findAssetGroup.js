@@ -12,7 +12,7 @@ async function findAssetGroup(asset){
                 {
                     '$gt': minDate,'$lt': maxDate
                 },
-            "asset.loc": 
+            'asset.coords.loc': 
                 {
                     '$geoWithin': 
                         {
