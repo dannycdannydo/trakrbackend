@@ -57,7 +57,6 @@ async function pipe(data){
             asset[keys[k]] = data[keys[k]]
         }
     }
-    console.log(data)
     delete data.token
     delete data.restURL
     //query DB to see if assets within +-30 days and 100m radius have been uploaded recently. Assume same asset if so.

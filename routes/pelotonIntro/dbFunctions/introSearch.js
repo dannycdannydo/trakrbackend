@@ -20,7 +20,7 @@ router.post('/pelotonIntro/dbFunctions/introSearch', async function(req, res, ne
       req.body.sort = {"asset.dateSent": -1}
     }
     const query = await introQueryMongoliser(req.body.query)
-    const result = await mongoQuery('peloton', 'intros', query, req.body.freq, req.body.sort)
+    const result = await mongoQuery('testing', 'pelly', query, req.body.freq, req.body.sort)
     const sums = await introSums(result)
     if (req.body.searchType && req.body.searchType.sumsOnly) {
       res.send({ sums: sums })

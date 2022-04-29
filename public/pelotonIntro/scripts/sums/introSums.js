@@ -36,7 +36,7 @@ const introSums = async function introSums (data) {
                         if (data[d].asset.price) {
                             sectors[data[d].asset.sectors[s]].value = (data[d].asset.price * 1)
                         } else {
-                            sectors[data[d].asset.sectors[s]].value = [0, 0]
+                            sectors[data[d].asset.sectors[s]].value = 0
                         }
                         if (data[d].asset.price && data[d].asset.price * 1 > 10000 && data[d].asset.price * 1 < 1000000000 &&
                             data[d].asset.rent && data[d].asset.rent * 1 > 100 && data[d].asset.rent * 1 < 1000000000) {
@@ -64,7 +64,7 @@ const introSums = async function introSums (data) {
                         if (data[d].asset.price) {
                             pots[data[d].asset.pots[s]].value = (data[d].asset.price * 1)
                         } else {
-                            pots[data[d].asset.pots[s]].value = [0, 0]
+                            pots[data[d].asset.pots[s]].value = 0
                         }
                         if (data[d].asset.price && data[d].asset.price * 1 > 10000 && data[d].asset.price * 1 < 1000000000 &&
                             data[d].asset.rent && data[d].asset.rent * 1 > 100 && data[d].asset.rent * 1 < 1000000000) {
@@ -94,7 +94,7 @@ const introSums = async function introSums (data) {
                                 if (data[d].asset.price) {
                                     agencies[data[d].intros[i].agencies[s]].value = (data[d].asset.price * 1)
                                 } else {
-                                    agencies[data[d].intros[i].agencies].value = [0, 0]
+                                    agencies[data[d].intros[i].agencies].value = 0
                                 }
                                 if (data[d].asset.price && data[d].asset.price * 1 > 10000 && data[d].asset.price * 1 < 1000000000 &&
                                     data[d].asset.rent && data[d].asset.rent * 1 > 100 && data[d].asset.rent * 1 < 1000000000) {

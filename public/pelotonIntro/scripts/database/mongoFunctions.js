@@ -233,7 +233,7 @@ async function introQueryArrayMongoliser(key, value)
             mongoloid['$or'].push({'intros': {'$elemMatch': {'agencies':`${value[v]}`}}})
         }
         else if(key == 'sectors'){
-            mongoloid['$or'].push({'intros': {'$elemMatch': {'sectors':`${value[v]}`}}})
+            mongoloid['$or'].push({'asset.sectors':`${value[v]}`})
         }
         else if(key == 'pot'){
             mongoloid['$or'].push({"asset.pots": `${value[v]}`})

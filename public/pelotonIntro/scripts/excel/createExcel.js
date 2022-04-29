@@ -148,14 +148,17 @@ function getRow (data, template, totalRow, totals) {
     const row = {}
     if (template === 'MyList') {
         try {
-            if (data.asset.address) {
+            if (data.asset.address && data.asset.address.length == 1) {
                 row.address = `${data.asset.address}`
-                row.maplink = `https://www.google.com/maps/place/${data.asset.loc.coordinates[1]},${data.asset.loc.coordinates[0]}`
+                row.maplink = `https://www.google.com/maps/place/${data.asset.coords[0].loc.coordinates[1]},${data.asset.coords[0].loc.coordinates[0]}`
+            } else if (data.asset.address && data.asset.address.length > 1){
+                row.address = 'Multiple'
+                row.maplink = '-'
             } else {
                 row.address = '-'
                 row.maplink = '-'
             }
-        } catch {
+        } catch (e) {
             row.address = '-'
             row.maplink = '-'
         }
