@@ -49,7 +49,9 @@ async function pipe(data){
             }
         }
     }
-    data.recipient = mail.to.value
+    if(mail.to && mail.to.recipient) {
+        data.recipient = mail.to.value
+    }
     data.html = mail.html
     const keys = ['address', 'dateSent', 'coords', 'attachments', 'pots', 'price', 'rent', 'yield', 'sectors']
     for(var k in keys){
@@ -65,8 +67,9 @@ async function pipe(data){
     if(groupCheck[0]){
         const result = await mongoFunctions.mongoUpdatePush('peloton', 'intros', {"_id" : groupCheck[1]._id.toString()}, { "intros": data } )
     }
-    // or, create a new asset based on this intros details.
+    // or, create a new asset based on this intros details. Also set into as selected one.
     else{
+        data.selected = true
         mongoFunctions.mongoInsert('peloton', 'intros', {asset: asset, intros: [data]})
     }
     return('true')
