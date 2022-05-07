@@ -66,7 +66,7 @@ router.post('/pelotonIntro/dbFunctions/newAssetFile', upload.array('file'), asyn
     for (var [key, value] of Object.entries(data.asset)) {
       data.intros[0][key] = value
       if(numbers.includes(key)) {
-        data.asset[key] = value * 1
+        data.asset[key] = (value.toString().replace(/\D/g,'')) * 1
       }
     }
     data.intros[0].body = 'Manual Upload'
