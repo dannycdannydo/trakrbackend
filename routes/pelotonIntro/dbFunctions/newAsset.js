@@ -2,16 +2,11 @@ var express = require('express');
 var router = express.Router();
 const { mongoInsert, mongoUpdatePush } = require('../../../public/pelotonIntro/scripts/database/mongoFunctions')
 const numbers = ['price', 'rent', 'yield']
-const dates = ['dateSent']
 var multer  = require('multer')
 var upload = multer({ })
-const { getAttachmentNames } = require('../../../public/pelotonIntro/scripts/analysis/emailAnalysis')
 const { uploadFile } = require('../../../public/pelotonIntro/scripts/storage/uploadFile')
 const { pdfToJpg } = require('../../../public/pelotonIntro/scripts/pdfWork/pdfToJpg')
 var mime = require('mime-types');
-const { keyBy } = require('lodash');
-const { UsernamePasswordCredential } = require('@azure/identity');
-const { trakrDBConnectionString } = require('../../../config/env/production');
 const { findAssetGroup } = require('../../../public/pelotonIntro/scripts/analysis/findAssetGroup');
 const userName = { 'nick@pelotonre.co.uk': 'Nick Okell', 'david@pelotonre.co.uk': 'Dave Tyson', 'jonny@pelotonre.co.uk': 'Jonny Nuttall', 'emily@pelotonre.co.uk': 'Emily Speak', 'daniel@trakr.it': 'Nick Okell' }
 
@@ -55,10 +50,15 @@ router.post('/pelotonIntro/dbFunctions/newAsset', async function(req, res, next)
   }
 });
 
-router.post('/pelotonIntro/dbFunctions/newAssetFile', upload.array('file'), async function(req, res, next) {
+router.post('/pelotonIntro/dbFunctions/newAssetFile', upload.any('files'), async function(req, res, next) {
   try {
     const files = req.files
-    const data = JSON.parse(req.body.data)
+    let data = {}
+    if (Array.isArray(req.body.data)) {
+      data = JSON.parse(JSON.parse(req.body.data[0]))
+    } else {
+      data = JSON.parse(JSON.parse(req.body.data))
+    }
     data.asset.dateSent = new Date
     if (!data.intros) {
       data.intros = []
@@ -93,13 +93,14 @@ router.post('/pelotonIntro/dbFunctions/newAssetFile', upload.array('file'), asyn
       res.send({status: 'success', message: 'Your asset and agent intro was uploaded succesfully.'})
     }
     for (var f in files) {
-      uploadFile(files[f].buffer, req.body.fileName[f], 'peloton', "." + mime.extension(files[f].mimetype))
+      uploadFile(files[f].buffer, data.asset.attachments[f].filename, 'peloton', "." + mime.extension(files[f].mimetype))
       if (mime.extension(files[f].mimetype).includes("pdf")) {
-        const img = await pdfToJpg(files[f].buffer, req.body.fileName[f])
-        uploadFile(img, req.body.fileName[f], 'peloton', ".jpg")
+        const img = await pdfToJpg(files[f].buffer, data.asset.attachments[f].filename)
+        uploadFile(img, data.asset.attachments[f].filename, 'peloton', ".jpg")
       }
     }
-  } catch {
+  } catch (e) {
+    console.log(e)
     res.send({status: 'failed', message: 'Sorry. There was an issue in uploading your asset. Please try again later.'})
   }
 });
