@@ -12,10 +12,10 @@ const data = {
     ]
   }
 
-async function forwardEmail(graphToken, userEmail, emailID, comment) {
+async function forwardEmail(graphToken, userEmail, emailID, info) {
     let returndata = {}
-    if(comment) {
-        data.comment = comment
+    if(info) {
+        data.comment = info
     }
     await axios.post(graphConfig.forwardEmail.replace('userID', userEmail).replace('emailID', emailID), data, { headers: {
         'Authorization': `Bearer ${graphToken}`, 'Content-Type': 'application/json'}

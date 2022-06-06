@@ -18,7 +18,7 @@ router.post('/trakr/coyote/forwardEmail', async function(req, res, next) {
         } else {
             graphToken = req.body.graphToken
         }
-        const result = await forwardEmail(graphToken, req.body.userEmail, req.body.emailID, req.body.comment)
+        const result = await forwardEmail(graphToken, req.body.userEmail, req.body.emailID, req.body.info)
         res.send({ status: result.status, graphToken: graphToken })
     } catch (err) {
         res.send({ status: 'error', graphToken: {error: err} })
