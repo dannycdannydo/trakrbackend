@@ -19,6 +19,7 @@ let getGraphToken = async function getGraphToken(accessToken)
             }
         };
         request(options, function (error, response) {
+            console.log(error)
             if (error) throw new Error(error);
             resolve(response.body)
         });
