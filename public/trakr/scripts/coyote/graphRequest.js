@@ -1,18 +1,17 @@
 const { graphConfig } = require("./authConfig")
 const axios = require('axios')
-const data = {
-    "comment": "comment-value",
-    "toRecipients": [
-        {
-            "emailAddress": {
-                "name": 'Daniel Campbell',
-                "address": 'daniel@trakr.it'
-            }
-        }
-    ]
-  }
 
 async function forwardEmail(graphToken, userEmail, emailID, info) {
+    const data = {
+        "toRecipients": [
+            {
+                "emailAddress": {
+                    "name": 'Daniel Campbell',
+                    "address": 'daniel@trakr.it'
+                }
+            }
+        ]
+      }
     let returndata = {}
     if(info) {
         data.comment = info
