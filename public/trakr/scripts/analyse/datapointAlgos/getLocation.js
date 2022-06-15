@@ -12,82 +12,164 @@ async function getLocation(sentences, text)
 {
     return new Promise (async function(resolve, reject)
     {
-        //postcode regex
-        const rx = /(GIR ?0AA|[A-PR-UWYZ]([0-9]{1,2}|([A-HK-Y][0-9]([0-9ABEHMNPRV-Y])?)|[0-9][A-HJKPS-UW]) ?[0-9][ABD-HJLNP-UW-Z]{2})/gi;
-        //match against full text
-        const pCodes = text.match(rx)
-        let fullAddress = {
-            town: null, 
-            region: null,
-            postcode: null,
-            loc: { type: 'Point', coordinates: null }
-        }
-        let townAddress = null
-        //getTown analyses text and returns most likely town and region as object
-        await getTown(sentences, false).then(function (result) {
-            townAddress = result
-        })
-        .catch(function (err) {
-            console.log(err)
-        })
-        //if there are no postcodes found, we try to find a partial address
-        //if it's the case, we return the partial address if that is successful, or else the town information.
-        if(!pCodes){
-            await partialaddress(townAddress, sentences).then(function (result) {
-                resolve( {
-                    town: result.Town, 
-                    region: result.Region,
-                    postcode: result.Postcode,
-                    loc: { type: 'Point', coordinates: [result.Longitude, result.Latitude] }
-                })
-                return;
+        try {
+            //postcode regex
+            const rx = /(GIR ?0AA|[A-PR-UWYZ]([0-9]{1,2}|([A-HK-Y][0-9]([0-9ABEHMNPRV-Y])?)|[0-9][A-HJKPS-UW]) ?[0-9][ABD-HJLNP-UW-Z]{2})/gi;
+            //match against full text
+            const pCodes = text.match(rx)
+            let fullAddress = {
+                town: null, 
+                region: null,
+                postcode: null,
+                loc: { type: 'Point', coordinates: null }
+            }
+            let townAddress = null
+            //getTown analyses text and returns most likely town and region as object
+            await getTown(sentences, false).then(function (result) {
+                townAddress = result
             })
             .catch(function (err) {
-                resolve(townAddress)
-                return;
+                console.log(err)
             })
-        }
-        //give priority to first and second pages when looking for a postcode
-        let addressPriority = {status: "invalid"}
-        for(i=0;i<2;i++){
-            //go through 1st and second sentences (or only first if you get succcess there)
-            if(sentences[i] && sentences[i].match(rx)){
-                //get the address from postcodes.io
-                await postcodeGeoCode.postcodeGeoCode(sentences[i].match(rx)[0]).then(function (result) {
-                    addressPriority = result
-                    if(!addressPriority.fullResult.region){
+            //if there are no postcodes found, we try to find a partial address
+            //if it's the case, we return the partial address if that is successful, or else the town information.
+            if(!pCodes){
+                await partialaddress(townAddress, sentences).then(function (result) {
+                    resolve( {
+                        town: result.Town, 
+                        region: result.Region,
+                        postcode: result.Postcode,
+                        loc: { type: 'Point', coordinates: [result.Longitude, result.Latitude] }
+                    })
+                    return;
+                })
+                .catch(function (err) {
+                    resolve(townAddress)
+                    return;
+                })
+            }
+            //give priority to first and second pages when looking for a postcode
+            let addressPriority = {status: "invalid"}
+            for(i=0;i<2;i++){
+                //go through 1st and second sentences (or only first if you get succcess there)
+                if(sentences[i] && sentences[i].match(rx)){
+                    //get the address from postcodes.io
+                    await postcodeGeoCode.postcodeGeoCode(sentences[i].match(rx)[0]).then(function (result) {
+                        addressPriority = result
+                        if(!addressPriority.fullResult.region){
+                            try{
+                                addressPriority.fullResult.region = addressPriority.fullResult.country
+                            }
+                            catch{}
+                        }
+                        }).catch(function (err) {
+                        })
+                    //if that fails, try google
+                    if(addressPriority.status == "invalid" && sentences[i] && sentences[i] && sentences[i].match(rx)){
+                        await geocode.geocode(sentences[i].match(rx)[0]).then(function (result) {
+                        addressPriority = result
+                        addressPriority.fullResult.longitude = addressPriority.Longitude
+                        addressPriority.fullResult.latitude = addressPriority.Latitude
+                        }).catch(function (err) {
+                        })
+                    }
+                    if(addressPriority.status == "valid"){
+                        //check if the rseult returned matches at all with our best guess for the town. If so, resolve with the answer.
+                        for(var info in addressPriority.fullResult){
+                            try{
+                                if(addressPriority.fullResult[info].toLowerCase().includes(townAddress.town.toLowerCase()) || 
+                                sentences[i].includes(addressPriority.fullResult[info].toLowerCase())){
+                                    try{
+                                        fullAddress.postcode = addressPriority.fullResult.postcode
+                                    }
+                                    catch{}
+                                    try{
+                                        fullAddress.region = addressPriority.fullResult.region
+                                    }
+                                    catch{}
+                                    try{
+                                        fullAddress.loc.coordinates = [addressPriority.fullResult.longitude, addressPriority.fullResult.latitude]
+                                    }
+                                    catch{}
+                                    try{
+                                        fullAddress.town = townAddress.town
+                                    }
+                                    catch{}
+                                    resolve(fullAddress)
+                                    return;
+                                }
+                                //also have to try replacing spaces with dashed. Sometimes people say Stoke-on-Trent, sometimes they say stoke on trent
+                                else if(townAddress.town.replace(" ", "-") && addressPriority.fullResult[info].toLowerCase().includes(townAddress.town.replace(" ", "-").toLowerCase())
+                                || addressPriority.fullResult[info].replace(" ", "-") && sentences[i].includes(addressPriority.fullResult[info].replace(" ", "-").toLowerCase())){
+                                    try{
+                                        fullAddress.postcode = addressPriority.fullResult.postcode
+                                    }
+                                    catch{}
+                                    try{
+                                        fullAddress.region = addressPriority.fullResult.region
+                                    }
+                                    catch{}
+                                    try{
+                                        fullAddress.loc.coordinates = [addressPriority.fullResult.longitude, addressPriority.fullResult.latitude]
+                                    }
+                                    catch{}
+                                    try{
+                                        fullAddress.town = townAddress.town
+                                    }
+                                    catch{}
+                                    resolve(fullAddress)
+                                    return;
+                                }
+                            }
+                            catch{}
+                        }
+                    }
+                }
+            }
+            //if all the above fails, take the top scoring postcode and run that through then resolve
+            //first turn to an object with counts for frequency of postcode
+            let pCodeObject = {}
+            for(var pCode in pCodes){
+                if(!pCodeObject[pCodes[pCode]]){
+                    pCodeObject[pCodes[pCode]] = 1
+                }
+                else{
+                    pCodeObject[pCodes[pCode]] = pCodeObject[pCodes[pCode]] + 1
+                }
+            }
+            //run through in order of frequency, resolving if we get a match with our suspecting town, else simply resolving with the top result
+            const pCoderesults = getSector.orderObject(pCodeObject)
+            for(p=0;p<pCoderesults.length;p++){
+                let add = await postcodeGeoCode.postcodeGeoCode(pCoderesults[p][0])
+                if(add.status == "valid"){
+                    if(!add.fullResult.region){
                         try{
-                            addressPriority.fullResult.region = addressPriority.fullResult.country
+                            add.fullResult.region = add.fullResult.country
                         }
                         catch{}
                     }
-                    }).catch(function (err) {
-                    })
-                //if that fails, try google
-                if(addressPriority.status == "invalid" && sentences[i] && sentences[i] && sentences[i].match(rx)){
-                    await geocode.geocode(sentences[i].match(rx)[0]).then(function (result) {
-                    addressPriority = result
-                    addressPriority.fullResult.longitude = addressPriority.Longitude
-                    addressPriority.fullResult.latitude = addressPriority.Latitude
-                    }).catch(function (err) {
-                    })
-                }
-                if(addressPriority.status == "valid"){
-                    //check if the rseult returned matches at all with our best guess for the town. If so, resolve with the answer.
-                    for(var info in addressPriority.fullResult){
+                    //check if the result returned matches at all with our best guess for the town. If so, resolve with the answer.
+                    for(var info in add.fullResult){
                         try{
-                            if(addressPriority.fullResult[info].toLowerCase().includes(townAddress.town.toLowerCase()) || 
-                            sentences[i].includes(addressPriority.fullResult[info].toLowerCase())){
+                            if(add.fullResult[info].toLowerCase().includes(townAddress.town.toLowerCase()) ||
+                            pCoderesults[p][1] > 4 ||
+                            text.includes(add.fullResult[info].toLowerCase())){
+
                                 try{
-                                    fullAddress.postcode = addressPriority.fullResult.postcode
+                                    fullAddress.postcode = add.fullResult.postcode
                                 }
                                 catch{}
                                 try{
-                                    fullAddress.region = addressPriority.fullResult.region
+                                    if(add.fullResult.region){
+                                        fullAddress.region = add.fullResult.region
+                                    }
+                                    else if(add.fullResult.country){
+                                        fullAddress.region = add.fullResult.country
+                                    }
                                 }
                                 catch{}
                                 try{
-                                    fullAddress.loc.coordinates = [addressPriority.fullResult.longitude, addressPriority.fullResult.latitude]
+                                    fullAddress.loc.coordinates = [add.fullResult.longitude, add.fullResult.latitude]
                                 }
                                 catch{}
                                 try{
@@ -98,18 +180,23 @@ async function getLocation(sentences, text)
                                 return;
                             }
                             //also have to try replacing spaces with dashed. Sometimes people say Stoke-on-Trent, sometimes they say stoke on trent
-                            else if(townAddress.town.replace(" ", "-") && addressPriority.fullResult[info].toLowerCase().includes(townAddress.town.replace(" ", "-").toLowerCase())
-                            || addressPriority.fullResult[info].replace(" ", "-") && sentences[i].includes(addressPriority.fullResult[info].replace(" ", "-").toLowerCase())){
+                            else if(townAddress.town.replace(" ", "-") && add.fullResult[info].toLowerCase().includes(townAddress.town.replace(" ", "-").toLowerCase()) ||
+                            text.replace(" ", "-") && text.replace(" ", "-").includes(add.fullResult[info].toLowerCase())){
                                 try{
-                                    fullAddress.postcode = addressPriority.fullResult.postcode
+                                    fullAddress.postcode = add.fullResult.postcode
                                 }
                                 catch{}
                                 try{
-                                    fullAddress.region = addressPriority.fullResult.region
+                                    if(add.fullResult.region){
+                                        fullAddress.region = add.fullResult.region
+                                    }
+                                    else if(add.fullResult.country){
+                                        fullAddress.region = add.fullResult.country
+                                    }
                                 }
                                 catch{}
                                 try{
-                                    fullAddress.loc.coordinates = [addressPriority.fullResult.longitude, addressPriority.fullResult.latitude]
+                                    fullAddress.loc.coordinates = [add.fullResult.longitude, add.fullResult.latitude]
                                 }
                                 catch{}
                                 try{
@@ -124,105 +211,27 @@ async function getLocation(sentences, text)
                     }
                 }
             }
-        }
-        //if all the above fails, take the top scoring postcode and run that through then resolve
-        //first turn to an object with counts for frequency of postcode
-        let pCodeObject = {}
-        for(var pCode in pCodes){
-            if(!pCodeObject[pCodes[pCode]]){
-                pCodeObject[pCodes[pCode]] = 1
-            }
-            else{
-                pCodeObject[pCodes[pCode]] = pCodeObject[pCodes[pCode]] + 1
-            }
-        }
-        //run through in order of frequency, resolving if we get a match with our suspecting town, else simply resolving with the top result
-        const pCoderesults = getSector.orderObject(pCodeObject)
-        for(p=0;p<pCoderesults.length;p++){
-            let add = await postcodeGeoCode.postcodeGeoCode(pCoderesults[p][0])
-            if(add.status == "valid"){
-                if(!add.fullResult.region){
-                    try{
-                        add.fullResult.region = add.fullResult.country
-                    }
-                    catch{}
+            if(townAddress){
+                try{
+                    fullAddress.region = townAddress.region
                 }
-                //check if the result returned matches at all with our best guess for the town. If so, resolve with the answer.
-                for(var info in add.fullResult){
-                    try{
-                        if(add.fullResult[info].toLowerCase().includes(townAddress.town.toLowerCase()) ||
-                        pCoderesults[p][1] > 4 ||
-                        text.includes(add.fullResult[info].toLowerCase())){
-
-                            try{
-                                fullAddress.postcode = add.fullResult.postcode
-                            }
-                            catch{}
-                            try{
-                                if(add.fullResult.region){
-                                    fullAddress.region = add.fullResult.region
-                                }
-                                else if(add.fullResult.country){
-                                    fullAddress.region = add.fullResult.country
-                                }
-                            }
-                            catch{}
-                            try{
-                                fullAddress.loc.coordinates = [add.fullResult.longitude, add.fullResult.latitude]
-                            }
-                            catch{}
-                            try{
-                                fullAddress.town = townAddress.town
-                            }
-                            catch{}
-                            resolve(fullAddress)
-                            return;
-                        }
-                        //also have to try replacing spaces with dashed. Sometimes people say Stoke-on-Trent, sometimes they say stoke on trent
-                        else if(townAddress.town.replace(" ", "-") && add.fullResult[info].toLowerCase().includes(townAddress.town.replace(" ", "-").toLowerCase()) ||
-                        text.replace(" ", "-") && text.replace(" ", "-").includes(add.fullResult[info].toLowerCase())){
-                            try{
-                                fullAddress.postcode = add.fullResult.postcode
-                            }
-                            catch{}
-                            try{
-                                if(add.fullResult.region){
-                                    fullAddress.region = add.fullResult.region
-                                }
-                                else if(add.fullResult.country){
-                                    fullAddress.region = add.fullResult.country
-                                }
-                            }
-                            catch{}
-                            try{
-                                fullAddress.loc.coordinates = [add.fullResult.longitude, add.fullResult.latitude]
-                            }
-                            catch{}
-                            try{
-                                fullAddress.town = townAddress.town
-                            }
-                            catch{}
-                            resolve(fullAddress)
-                            return;
-                        }
-                    }
-                    catch{}
+                catch{}
+                try{
+                    fullAddress.town = townAddress.town
                 }
+                catch{}
+                resolve(fullAddress)
+                return;
             }
-        }
-        if(townAddress){
-            try{
-                fullAddress.region = townAddress.region
-            }
-            catch{}
-            try{
-                fullAddress.town = townAddress.town
-            }
-            catch{}
             resolve(fullAddress)
-            return;
+        } catch {
+            resolve({
+                town: null, 
+                region: null,
+                postcode: null,
+                loc: { type: 'Point', coordinates: null }
+            })
         }
-        resolve(fullAddress)
     })
 }
 

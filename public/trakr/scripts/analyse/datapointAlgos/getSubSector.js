@@ -193,7 +193,7 @@ async function getSubSector(sentences, text)
         }
         catch(err){
             console.log(err)
-            resolve({name: ['subsectors'], data: null})
+            resolve({name: ['subsectors'], data: []})
         }
         //resolves as null if rubbish
     })

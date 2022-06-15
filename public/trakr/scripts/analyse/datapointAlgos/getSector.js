@@ -160,10 +160,9 @@ async function getSector(sentences, text)
         }
         catch(err){
             console.log(err)
-            resolve({name: ['sectors'], data: null})
+            resolve({name: ['sectors'], data: []})
         }
         //resolves as null if rubbish
-        
     })
 }
 
