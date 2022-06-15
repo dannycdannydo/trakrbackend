@@ -228,6 +228,7 @@ async function brochureArrayMongoliser(key, value)
 {
     let mongoloid = {'$or': []}
     for(var v in value){
+        console.log(value[v].toLowerCase())
         if(key == 'sectors'){
             mongoloid['$or'].push({'sectors': {'$elemMatch': {'sector':`${value[v]}`}}})
         }
@@ -241,12 +242,13 @@ async function brochureArrayMongoliser(key, value)
             mongoloid['$or'].push({"base.region": `${value[v]}`})
         }
         else if(key == 'tenants'){
-            mongoloid['$or'].push({'tenants': {'$elemMatch': {'tenant': new RegExp(value[v])}}})
+            mongoloid['$or'].push({'tenants': {'$elemMatch': {'tenant': new RegExp(value[v].toLowerCase())}}})
         }
         else if(key == '_id'){
             mongoloid['$or'].push({"_id": ObjectId(value[v])} )
         }
     }
+    console.log(mongoloid['$or'][0])
     return(mongoloid)
 }
 
