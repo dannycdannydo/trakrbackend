@@ -12,7 +12,9 @@ let uploadFile = async function upload_file(file, filename, container, failname,
         try{
             if(suffix == '.pdf'){
                 let firstPageBuffer = await getFirstPage(file)
-                uploadImage(filename, firstPageBuffer, suffix)
+                if (firstPageBuffer) {
+                    uploadImage(filename, firstPageBuffer, suffix)
+                }
             }
             else{
                 uploadImage(filename, file, suffix)
@@ -65,31 +67,35 @@ let uploadImage = async function upload_Image(filename, file, filetype)
 let getFirstPage = async function getFirstPage(buffer){
     return new Promise(async function(resolve, reject)
     {
-        const hummus = require('hummus');
-        const streams = require('memory-streams');
-        const PDFRStreamForBuffer = require('./pdfr-stream-for-buffer.js');
+        try {
+            const hummus = require('hummus');
+            const streams = require('memory-streams');
+            const PDFRStreamForBuffer = require('./pdfr-stream-for-buffer.js');
 
-        //Creating a stream, so hummus pushes the result to it
-        let outStream = new streams.WritableStream();
-        //Using PDFStreamForResponse to be able to pass a writable stream
-        let pdfWriter = hummus.createWriter(new hummus.PDFStreamForResponse(outStream));
+            //Creating a stream, so hummus pushes the result to it
+            let outStream = new streams.WritableStream();
+            //Using PDFStreamForResponse to be able to pass a writable stream
+            let pdfWriter = hummus.createWriter(new hummus.PDFStreamForResponse(outStream));
 
-        //Using our custom PDFRStreamForBuffer adapter so we are able to read from buffer
-        let copyingContext = pdfWriter.createPDFCopyingContext(new PDFRStreamForBuffer(buffer));
-        //Get the first page.
-        copyingContext.appendPDFPageFromPDF(0);
+            //Using our custom PDFRStreamForBuffer adapter so we are able to read from buffer
+            let copyingContext = pdfWriter.createPDFCopyingContext(new PDFRStreamForBuffer(buffer));
+            //Get the first page.
+            copyingContext.appendPDFPageFromPDF(0);
 
-        //We need to call this as per docs/lib examples
-        pdfWriter.end();
+            //We need to call this as per docs/lib examples
+            pdfWriter.end();
 
-        //Here is a nuance.
-        //HummusJS does it's work SYNCHRONOUSLY. This means that by this line
-        //everything is written to our stream. So we can safely run .end() on our stream.
-        outStream.end();
+            //Here is a nuance.
+            //HummusJS does it's work SYNCHRONOUSLY. This means that by this line
+            //everything is written to our stream. So we can safely run .end() on our stream.
+            outStream.end();
 
-        //As we used 'memory-stream' and our stream is ended
-        //we can just grab stream's content and return it
-        resolve(outStream.toBuffer()) 
+            //As we used 'memory-stream' and our stream is ended
+            //we can just grab stream's content and return it
+            resolve(outStream.toBuffer()) 
+        } catch {
+            resolve(null)
+        }
     })
 }
 
