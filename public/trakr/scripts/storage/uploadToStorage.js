@@ -12,7 +12,7 @@ let uploadFile = async function upload_file(file, filename, container, failname,
         try{
             if(suffix == '.pdf'){
                 let firstPageBuffer = await getFirstPage(file)
-                if(firstPageBuffer) {
+                if (firstPageBuffer) {
                     uploadImage(filename, firstPageBuffer, suffix)
                 }
             }
@@ -94,7 +94,7 @@ let getFirstPage = async function getFirstPage(buffer){
             //we can just grab stream's content and return it
             resolve(outStream.toBuffer()) 
         } catch {
-            resolve(null) 
+            resolve(null)
         }
     })
 }
