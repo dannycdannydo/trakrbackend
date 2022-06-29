@@ -69,8 +69,17 @@ async function getWords(text)
 {
     return new Promise (async function(resolve, reject)
     {
-        const words = await wordtokenizer.tokenize(text)
-        resolve(words)
+        try {
+            let words = []
+            if(text && text.length > 0) {
+                words = await wordtokenizer.tokenize(text)
+                resolve(words)
+            } else {
+                resolve(null)
+            }
+        } catch {
+            resolve(null)
+        }
     })
 }
 

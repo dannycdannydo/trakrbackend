@@ -1,11 +1,9 @@
 var express = require('express');
-const { Console } = require('winston/lib/winston/transports');
 var router = express.Router();
 const { getGraphToken } = require('../../../public/trakr/scripts/coyote/auth')
 const { forwardEmail, getUser } = require('../../../public/trakr/scripts/coyote/graphRequest')
 
 router.post('/trakr/coyote/forwardEmail', async function(req, res, next) {
-    console.log(req.body)
     let graphToken = ''
     try {
         if(!req.body.graphToken) {

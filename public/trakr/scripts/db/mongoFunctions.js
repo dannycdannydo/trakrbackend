@@ -13,10 +13,13 @@ let mongoInsert = async function mongoInsert(database, collection, data)
             var dbo = db.db(database);
             await dbo.collection(collection).insertOne(data, async function(err, res) {
             if (err){
-                console.log(err)
                 if(err.code = 11000){
+                    console.log('Duplicate')
                     db.close();
                     resolve("Duplicate")
+                } else {
+                    console.log(err)
+                    resolve("Error")
                 }
             }
             db.close();
@@ -228,7 +231,6 @@ async function brochureArrayMongoliser(key, value)
 {
     let mongoloid = {'$or': []}
     for(var v in value){
-        console.log(value[v].toLowerCase())
         if(key == 'sectors'){
             mongoloid['$or'].push({'sectors': {'$elemMatch': {'sector':`${value[v]}`}}})
         }
@@ -248,7 +250,6 @@ async function brochureArrayMongoliser(key, value)
             mongoloid['$or'].push({"_id": ObjectId(value[v])} )
         }
     }
-    console.log(mongoloid['$or'][0])
     return(mongoloid)
 }
 
