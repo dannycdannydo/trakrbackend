@@ -5,6 +5,8 @@ const _ = require('lodash')
 const { getOrganisations } = require('../../../public/trakr/scripts/auth/getOrganisations')
 
 router.post('/trakr/dbFunctions/brochureQuery', async function(req, res, next) {
+    const hello = 1
+    hello + 2
     const exclude = []
     if (req.body.exclude) {
         for (var e in req.body.exclude) {
