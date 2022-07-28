@@ -120,7 +120,7 @@ let mongoQuery = async function mongoQuery(database, collection, data, freq, sor
         MongoClient.connect(config.trakrDBConnectionString, {useUnifiedTopology: true}, function(err, db) {
             if (err) throw err;
             var dbo = db.db(database);
-            dbo.collection(collection).find(data).sort(sort).limit(freq).toArray(function(err, result) {
+            dbo.collection(collection).find(data).sort(sort).allowDiskUse().limit(freq).toArray(function(err, result) {
               if (err){
                 db.close();
                 console.log(err)
