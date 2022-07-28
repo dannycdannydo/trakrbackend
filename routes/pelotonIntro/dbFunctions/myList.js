@@ -11,7 +11,7 @@ router.post('/pelotonIntro/dbFunctions/addToMyList', async function(req, res, ne
 router.post('/pelotonIntro/dbFunctions/checkMyList', async function(req, res, next) {
     if (req.body.user) {
         try {
-            const result = await mongoQuery('pelotonUserLists', req.body.user, {"id": req.body.asset.id }, 100000000, {'dateSent': -1})
+            const result = await mongoQuery('pelotonUserLists', req.body.user, {"id": req.body.asset.id }, 100000000, {'asset.dateSent': -1})
             if (result[0]) {
                 res.send(true)
             } else {
