@@ -5,8 +5,6 @@ const _ = require('lodash')
 const { getOrganisations } = require('../../../public/trakr/scripts/auth/getOrganisations')
 
 router.post('/trakr/dbFunctions/brochureQuery', async function(req, res, next) {
-    const hello = 1
-    hello + 2
     const exclude = []
     if (req.body.exclude) {
         for (var e in req.body.exclude) {
@@ -25,6 +23,7 @@ router.post('/trakr/dbFunctions/brochureQuery', async function(req, res, next) {
     if(req.body.freq){
         freq = req.body.freq
     }
+    console.log(req.body)
     const mongolisedQuery = await brochureQueryMongoliser(data)
     let result = {}
     let trakrAssets = await mongoQuery('trakr', 'brochures', mongolisedQuery, freq, sort)
@@ -62,6 +61,7 @@ router.post('/trakr/dbFunctions/brochureQuery', async function(req, res, next) {
         delete result.assets
     }
     res.send(result)
+    res.end()
 });
 
 module.exports = router;
